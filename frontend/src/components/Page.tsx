@@ -9,6 +9,7 @@ import {
 import Button from "./Button";
 import Heading from "./Heading";
 import { Link } from "react-router-dom";
+import InternalLink from "./InternalLink";
 
 function WalletOptions() {
   const { connect, connectors } = useConnect();
@@ -34,14 +35,19 @@ function WalletOptions() {
 
 export default function Page(props: PropsWithChildren) {
   return (
-    <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-      <header className="flex justify-between">
-        <Link to="/">
-          <Heading>Joint Account</Heading>
-        </Link>
-        <WalletOptions />
-      </header>
-      {props.children}
+    <div className="flex flex-col justify-between min-h-screen px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <div>
+        <header className="flex justify-between">
+          <Link to="/">
+            <Heading>Joint Account</Heading>
+          </Link>
+          <WalletOptions />
+        </header>
+        {props.children}
+      </div>
+      <footer>
+        <InternalLink to="/aliases">Aliases</InternalLink>
+      </footer>
     </div>
   );
 }

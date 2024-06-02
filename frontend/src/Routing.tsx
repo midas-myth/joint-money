@@ -5,6 +5,7 @@ const LazyMainPage = lazy(() => import("./pages/Main"));
 const LazyGroupCreatePage = lazy(() => import("./pages/GroupCreate"));
 const LazyGroupPage = lazy(() => import("./pages/Group"));
 const LazyInvitesPage = lazy(() => import("./pages/Invites"));
+const LazyAliasesPage = lazy(() => import("./pages/Aliases"));
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,14 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<div>Loading...</div>}>
         <LazyInvitesPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/aliases",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <LazyAliasesPage />
       </Suspense>
     ),
   },

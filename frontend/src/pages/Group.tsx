@@ -1,20 +1,25 @@
 import { useParams } from "react-router-dom";
 
 import {
-  useReadJointMoneyGetGroup,
-  useWriteJointMoneyDeposit,
   useSimulateJointMoneyDeposit,
+  useSimulateJointMoneyInviteMembers,
+  useWriteJointMoneyDeposit,
+  useWriteJointMoneyInviteMembers,
+  useWriteJointMoneyRemoveMember,
 } from "../generated";
 
-import AddressTag from "../components/AddressTag";
-import Heading from "../components/Heading";
-import Page from "../components/Page";
 import { useMemo, useState } from "react";
+import { Address, isAddress } from "viem";
+import { useAccount } from "wagmi";
+
+import AddressTag from "../components/AddressTag";
 import Button from "../components/Button";
+import Heading from "../components/Heading";
 import Input from "../components/Input";
+import Page from "../components/Page";
+import useGroup from "../hooks/useGroup";
 
 function convert(value: string, radix: number): bigint {
-  // value: string
   const size = 10;
   const factor = BigInt(radix ** size);
   let i = value.length % size || size;
@@ -26,6 +31,7 @@ function convert(value: string, radix: number): bigint {
 }
 
 export default function Group() {
+  const { address } = useAccount();
   const groupIdRaw = useParams<"id">().id;
 
   const groupId = useMemo(
@@ -33,11 +39,18 @@ export default function Group() {
     [groupIdRaw]
   );
 
-  const { data: group, isLoading } = useReadJointMoneyGetGroup({
-    args: [BigInt(groupId!)],
-    query: { enabled: groupId !== undefined },
-  });
-  console.log({ groupId, groupIdRaw, group, isLoading });
+  const { data: group, isLoading } = useGroup(groupId);
+
+  const { isAdmin, isMember } = useMemo(() => {
+    if (!group) {
+      return { isAdmin: false, isMember: false };
+    }
+
+    return {
+      isAdmin: group.members[0] === address,
+      isMember: address && group.members.includes(address),
+    };
+  }, [address, group]);
 
   if (isLoading) {
     return (
@@ -60,31 +73,54 @@ export default function Group() {
   return (
     <Page>
       <Heading>Group</Heading>
-      <div
-        className="p-2 border border-gray-300 rounded"
-        key={group.id.toString(36)}
-      >
-        <div>Title: {group.id.toString(36)}</div>
-        <div>
-          Members:{" "}
-          {group.members.map((m) => (
-            <AddressTag key={m} address={m} />
-          ))}
+      <div className="flex flex-col gap-2">
+        <div
+          className="flex flex-col gap-1 p-2 border border-gray-300 rounded"
+          key={group.id.toString(36)}
+        >
+          <div className="flex items-center gap-2">
+            Title:
+            <div className="max-w-full min-w-0 overflow-hidden text-ellipsis">
+              {group.id.toString(36)}
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            Admin:
+            <AddressTag address={group.admin} />
+          </div>
+          <div className="flex flex-col">
+            Members:
+            <div className="inline-flex flex-col flex-wrap items-start gap-1 overflow-hidden">
+              {group.members.map((m) => (
+                <Member
+                  key={m}
+                  groupId={group.id}
+                  address={m}
+                  adminAddress={group.admin}
+                />
+              ))}
+            </div>
+          </div>
+          <div>
+            Invites to:{" "}
+            <div className="inline-flex flex-wrap gap-1">
+              {group.invites.map((i) => (
+                <AddressTag key={i} address={i} />
+              ))}
+            </div>
+          </div>
+          <div>Balance: {group.balance.toString()} wei</div>
         </div>
-        <div>
-          Invites to:{" "}
-          {group.invites.map((i) => (
-            <AddressTag key={i} address={i} />
-          ))}
-        </div>
-        <div>Balance: {group.balance.toString()} wei</div>
+        {isMember && <DepositRow groupId={group.id} />}
+        {isAdmin && <InviteRow groupId={group.id} />}
+        {!isMember && !isAdmin && <div>Read only</div>}
       </div>
-      <DepositRow groupId={group.id} />
     </Page>
   );
 }
 
 function DepositRow(props: { groupId: bigint }) {
+  const { address } = useAccount();
   const [amount, setAmount] = useState<string>("");
 
   const amountBigInt = useMemo(() => {
@@ -95,12 +131,11 @@ function DepositRow(props: { groupId: bigint }) {
     }
   }, [amount]);
 
-  const { data, status } = useSimulateJointMoneyDeposit({
+  const { data } = useSimulateJointMoneyDeposit({
     args: [props.groupId],
     value: amountBigInt,
+    account: address,
   });
-
-  console.log("sim stat", status);
 
   const { writeContractAsync } = useWriteJointMoneyDeposit();
 
@@ -117,6 +152,7 @@ function DepositRow(props: { groupId: bigint }) {
     }
 
     await writeContractAsync(data.request);
+    setAmount("");
   };
 
   return (
@@ -128,5 +164,71 @@ function DepositRow(props: { groupId: bigint }) {
       />
       <Button type="submit">Deposit</Button>
     </form>
+  );
+}
+
+function InviteRow(props: { groupId: bigint }) {
+  const { address } = useAccount();
+  const [invite, setInvite] = useState("");
+  const { data } = useSimulateJointMoneyInviteMembers({
+    args: [props.groupId, [invite as Address]],
+    query: { enabled: isAddress(invite) },
+    account: address,
+  });
+
+  const [errorString, setErrorString] = useState<string | undefined>(undefined);
+
+  const { writeContractAsync } = useWriteJointMoneyInviteMembers();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!isAddress(invite)) {
+      setErrorString("Invalid address");
+      return;
+    }
+
+    if (!data) {
+      alert("Invalid data");
+      return;
+    }
+
+    await writeContractAsync(data.request);
+  };
+
+  return (
+    <form className="flex flex-col gap-1" onSubmit={handleSubmit}>
+      <div className="flex gap-1">
+        <Input value={invite} onChange={(e) => setInvite(e.target.value)} />
+        <Button>Invite</Button>
+      </div>
+      {errorString && <div className="text-red-500">{errorString}</div>}
+    </form>
+  );
+}
+
+function Member(props: {
+  address: Address;
+  groupId: bigint;
+  adminAddress: Address;
+}) {
+  const { address } = useAccount();
+  const { writeContractAsync } = useWriteJointMoneyRemoveMember();
+
+  const handleRemove = async () => {
+    await writeContractAsync({
+      args: [props.groupId, props.address],
+      account: address,
+    });
+  };
+
+  return (
+    <div className="flex items-center gap-1">
+      <AddressTag address={props.address} />
+      {props.adminAddress !== props.address &&
+        address === props.adminAddress && (
+          <Button onClick={handleRemove}>X</Button>
+        )}
+    </div>
   );
 }

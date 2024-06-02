@@ -13,6 +13,7 @@ import {
  *
  */
 export const jointMoneyAbi = [
+  { type: 'error', inputs: [], name: 'GroupNotFound' },
   {
     type: 'event',
     anonymous: false,
@@ -58,6 +59,28 @@ export const jointMoneyAbi = [
     anonymous: false,
     inputs: [
       { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
+    ],
+    name: 'GroupDeleted',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
+      {
+        name: 'invitee',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'InvitationCancelled',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
       {
         name: 'member',
         internalType: 'address',
@@ -66,6 +89,20 @@ export const jointMoneyAbi = [
       },
     ],
     name: 'MemberAccepted',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
+      {
+        name: 'member',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'MemberRemoved',
   },
   {
     type: 'event',
@@ -110,10 +147,27 @@ export const jointMoneyAbi = [
   },
   {
     type: 'function',
+    inputs: [
+      { name: 'id', internalType: 'uint256', type: 'uint256' },
+      { name: 'invitee', internalType: 'address', type: 'address' },
+    ],
+    name: 'cancelInvitation',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
     inputs: [{ name: 'invites', internalType: 'address[]', type: 'address[]' }],
     name: 'createGroup',
     outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
     stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'id', internalType: 'uint256', type: 'uint256' }],
+    name: 'deleteGroup',
+    outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
     type: 'function',
@@ -178,6 +232,24 @@ export const jointMoneyAbi = [
   },
   {
     type: 'function',
+    inputs: [],
+    name: 'getMyInvites',
+    outputs: [{ name: '', internalType: 'uint256[]', type: 'uint256[]' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    name: 'groups',
+    outputs: [
+      { name: 'id', internalType: 'uint256', type: 'uint256' },
+      { name: 'admin', internalType: 'address', type: 'address' },
+      { name: 'balance', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [
       { name: 'id', internalType: 'uint256', type: 'uint256' },
       { name: 'invites', internalType: 'address[]', type: 'address[]' },
@@ -195,6 +267,26 @@ export const jointMoneyAbi = [
     name: 'removeMember',
     outputs: [],
     stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'userGroupInvites',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'userGroups',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
     type: 'function',
@@ -287,6 +379,52 @@ export const useReadJointMoneyGetMyGroups = /*#__PURE__*/ createUseReadContract(
 )
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"getMyInvites"`
+ *
+ *
+ */
+export const useReadJointMoneyGetMyInvites =
+  /*#__PURE__*/ createUseReadContract({
+    abi: jointMoneyAbi,
+    address: jointMoneyAddress,
+    functionName: 'getMyInvites',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"groups"`
+ *
+ *
+ */
+export const useReadJointMoneyGroups = /*#__PURE__*/ createUseReadContract({
+  abi: jointMoneyAbi,
+  address: jointMoneyAddress,
+  functionName: 'groups',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"userGroupInvites"`
+ *
+ *
+ */
+export const useReadJointMoneyUserGroupInvites =
+  /*#__PURE__*/ createUseReadContract({
+    abi: jointMoneyAbi,
+    address: jointMoneyAddress,
+    functionName: 'userGroupInvites',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"userGroups"`
+ *
+ *
+ */
+export const useReadJointMoneyUserGroups = /*#__PURE__*/ createUseReadContract({
+  abi: jointMoneyAbi,
+  address: jointMoneyAddress,
+  functionName: 'userGroups',
+})
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyAbi}__
  *
  *
@@ -309,6 +447,18 @@ export const useWriteJointMoneyAcceptGroupInvitation =
   })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"cancelInvitation"`
+ *
+ *
+ */
+export const useWriteJointMoneyCancelInvitation =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: jointMoneyAbi,
+    address: jointMoneyAddress,
+    functionName: 'cancelInvitation',
+  })
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"createGroup"`
  *
  *
@@ -318,6 +468,18 @@ export const useWriteJointMoneyCreateGroup =
     abi: jointMoneyAbi,
     address: jointMoneyAddress,
     functionName: 'createGroup',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"deleteGroup"`
+ *
+ *
+ */
+export const useWriteJointMoneyDeleteGroup =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: jointMoneyAbi,
+    address: jointMoneyAddress,
+    functionName: 'deleteGroup',
   })
 
 /**
@@ -389,6 +551,18 @@ export const useSimulateJointMoneyAcceptGroupInvitation =
   })
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"cancelInvitation"`
+ *
+ *
+ */
+export const useSimulateJointMoneyCancelInvitation =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: jointMoneyAbi,
+    address: jointMoneyAddress,
+    functionName: 'cancelInvitation',
+  })
+
+/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"createGroup"`
  *
  *
@@ -398,6 +572,18 @@ export const useSimulateJointMoneyCreateGroup =
     abi: jointMoneyAbi,
     address: jointMoneyAddress,
     functionName: 'createGroup',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"deleteGroup"`
+ *
+ *
+ */
+export const useSimulateJointMoneyDeleteGroup =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: jointMoneyAbi,
+    address: jointMoneyAddress,
+    functionName: 'deleteGroup',
   })
 
 /**
@@ -484,6 +670,30 @@ export const useWatchJointMoneyGroupCreatedEvent =
   })
 
 /**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyAbi}__ and `eventName` set to `"GroupDeleted"`
+ *
+ *
+ */
+export const useWatchJointMoneyGroupDeletedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: jointMoneyAbi,
+    address: jointMoneyAddress,
+    eventName: 'GroupDeleted',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyAbi}__ and `eventName` set to `"InvitationCancelled"`
+ *
+ *
+ */
+export const useWatchJointMoneyInvitationCancelledEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: jointMoneyAbi,
+    address: jointMoneyAddress,
+    eventName: 'InvitationCancelled',
+  })
+
+/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyAbi}__ and `eventName` set to `"MemberAccepted"`
  *
  *
@@ -493,6 +703,18 @@ export const useWatchJointMoneyMemberAcceptedEvent =
     abi: jointMoneyAbi,
     address: jointMoneyAddress,
     eventName: 'MemberAccepted',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyAbi}__ and `eventName` set to `"MemberRemoved"`
+ *
+ *
+ */
+export const useWatchJointMoneyMemberRemovedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: jointMoneyAbi,
+    address: jointMoneyAddress,
+    eventName: 'MemberRemoved',
   })
 
 /**

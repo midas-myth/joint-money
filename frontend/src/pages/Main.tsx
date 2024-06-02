@@ -2,20 +2,29 @@ import { useAccount } from "wagmi";
 
 import Page from "../components/Page";
 
+import { isAddress } from "viem";
 import InternalLink from "../components/InternalLink";
 import { useReadJointMoneyGetMyGroups } from "../generated";
-import AddressTag from "../components/AddressTag";
-
+import useInvites from "../hooks/useInvites";
 export default function Main() {
   const { address } = useAccount();
 
-  const { data, error, status } = useReadJointMoneyGetMyGroups();
+  const { data } = useReadJointMoneyGetMyGroups({
+    query: { enabled: address && isAddress(address) },
+    account: address,
+  });
 
-  console.log({ data, error, status });
+  const { data: invites } = useInvites();
 
   return (
     <Page>
       <div>Address {address}</div>
+      {invites && invites.length !== 0 && (
+        <div>
+          You have {invites.length} invites.{" "}
+          <InternalLink to="/invites">View invites</InternalLink>.
+        </div>
+      )}
       <div>
         <div>Your groups</div>
         {!data && <div>No data</div>}
@@ -24,32 +33,22 @@ export default function Main() {
             <div>No groups</div>
           </>
         )}
-
         {data && data.length !== 0 && (
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2">
             {data.map((group) => (
               <div
-                className="p-2 border border-gray-300 rounded"
+                className="p-2 border border-gray-300 rounded "
                 key={group.id.toString(36)}
               >
                 <div>Title: {group.id.toString(36)}</div>
-                <div>
-                  Members:{" "}
-                  {group.members.map((m) => (
-                    <AddressTag key={m} address={m} />
-                  ))}
-                </div>
-                <div>
-                  Invites to:{" "}
-                  {group.invites.map((i) => (
-                    <AddressTag key={i} address={i} />
-                  ))}
-                </div>
+                <InternalLink to={`/groups/${group.id.toString(36)}`}>
+                  Open
+                </InternalLink>
               </div>
             ))}
           </div>
         )}
-        <InternalLink to="/group/create">Create a group</InternalLink>
+        <InternalLink to="/groups/create">Create a group</InternalLink>
       </div>
     </Page>
   );

@@ -4,6 +4,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 const LazyMainPage = lazy(() => import("./pages/Main"));
 const LazyGroupCreatePage = lazy(() => import("./pages/GroupCreate"));
 const LazyGroupPage = lazy(() => import("./pages/Group"));
+const LazyInvitesPage = lazy(() => import("./pages/Invites"));
 
 const router = createBrowserRouter([
   {
@@ -15,7 +16,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/group/create",
+    path: "/groups/create",
     element: (
       <Suspense fallback={<div>Loading...</div>}>
         <LazyGroupCreatePage />
@@ -23,10 +24,18 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/group/:id",
+    path: "/groups/:id",
     element: (
       <Suspense fallback={<div>Loading...</div>}>
         <LazyGroupPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/invites",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <LazyInvitesPage />
       </Suspense>
     ),
   },

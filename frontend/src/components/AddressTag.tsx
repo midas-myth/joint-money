@@ -1,16 +1,16 @@
 import { Address } from "viem";
+import { useAccount } from "wagmi";
 import { useEnsAvatar, useEnsName } from "wagmi";
 
 export default function AddressTag(props: { address: Address }) {
+  const { address: currentAccountAddress } = useAccount();
   const { data: ensName } = useEnsName({ address: props.address });
   const { data: ensAvatar } = useEnsAvatar({ name: ensName! });
 
-  console.log({ ensName, ensAvatar });
-
   return (
-    <div className="inline-block px-1 border border-gray-300 rounded ">
+    <div className="inline-block max-w-full min-w-0 px-1 overflow-hidden border border-gray-300 rounded text-ellipsis">
       {ensName && ensAvatar && <img src={ensAvatar} alt={ensName} />}
-      {props.address}
+      {currentAccountAddress === props.address ? "You" : props.address}
     </div>
   );
 }

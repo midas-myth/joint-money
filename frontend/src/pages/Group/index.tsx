@@ -7,6 +7,7 @@ import AddressTag from "../../components/AddressTag";
 import Heading from "../../components/Heading";
 import Page from "../../components/Page";
 import useGroup from "../../hooks/useGroup";
+import AllowanceRow from "./AllowanceRow";
 import DeleteRow from "./DeleteRow";
 import DepositRow from "./DepositRow";
 import Invitee from "./Invitee";
@@ -120,6 +121,8 @@ export default function Group() {
         {isMember && <DepositRow groupId={group.id} />}
         {isAdmin && <InviteRow groupId={group.id} />}
         {isMember && <WithdrawRow groupId={group.id} />}
+        {isAdmin && <AllowanceRow groupId={group.id} />}
+
         {isAdmin && <DeleteRow groupId={group.id} />}
         {!isMember && !isAdmin && <div>Read only</div>}
       </div>

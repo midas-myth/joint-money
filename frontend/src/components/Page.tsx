@@ -20,7 +20,7 @@ function WalletOptions() {
   const { data: ensAvatar } = useEnsAvatar({ name: ensName! });
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex flex-wrap items-center justify-end gap-1">
       {connectors.map((connector) => (
         <Button key={connector.id} onClick={() => connect({ connector })}>
           {connector.name}
@@ -38,7 +38,7 @@ export default function Page(props: PropsWithChildren) {
   return (
     <div className="flex flex-col justify-between min-h-screen px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
       <div>
-        <header className="flex justify-between">
+        <header className="flex justify-between pt-4">
           <Link to="/">
             <Heading>Joint Account</Heading>
           </Link>

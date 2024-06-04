@@ -50,6 +50,7 @@ export default function DepositRow(props: { groupId: bigint }) {
         type="number"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
+        placeholder="Amount"
       />
       <Button type="submit">Deposit</Button>
     </form>

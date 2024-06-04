@@ -41,7 +41,11 @@ export default function InviteRow(props: { groupId: bigint }) {
   return (
     <form className="flex flex-col gap-1" onSubmit={handleSubmit}>
       <div className="flex gap-1">
-        <Input value={invite} onChange={(e) => setInvite(e.target.value)} />
+        <Input
+          value={invite}
+          onChange={(e) => setInvite(e.target.value)}
+          placeholder="Address"
+        />
         <Button>Invite</Button>
       </div>
       {errorString && <div className="text-red-500">{errorString}</div>}

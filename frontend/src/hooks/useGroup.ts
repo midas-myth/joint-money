@@ -6,6 +6,7 @@ import {
   jointMoneyAbi,
   useReadJointMoneyGetGroup,
   useReadJointMoneyMemberDailyAllowanceMap,
+  useWatchJointMoneyAllowanceSetEvent,
   useWatchJointMoneyDepositEvent,
   useWatchJointMoneyInvitationCancelledEvent,
   useWatchJointMoneyMemberAcceptedEvent,
@@ -122,6 +123,18 @@ export default function useGroup(groupId?: bigint) {
     enabled: groupId !== undefined,
     onLogs: () => {
       console.log("Invitation cancelled event");
+
+      throttledRefetch();
+    },
+  });
+
+  useWatchJointMoneyAllowanceSetEvent({
+    args: {
+      id: groupId!,
+    },
+    enabled: groupId !== undefined,
+    onLogs: () => {
+      console.log("Allowance set event");
 
       throttledRefetch();
     },

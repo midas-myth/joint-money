@@ -5,11 +5,11 @@ import { useAccount } from "wagmi";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import {
-  useSimulateJointMoneyWithdraw,
-  useWriteJointMoneyWithdraw,
+  useSimulateJointMoneySetAllowance,
+  useWriteJointMoneySetAllowance,
 } from "../../generated";
 
-export default function WithdrawRow(props: { groupId: bigint }) {
+export default function AllowanceRow(props: { groupId: bigint }) {
   const { address } = useAccount();
   const [amount, setAmount] = useState<string>("");
   const [to, setTo] = useState<string>("");
@@ -22,15 +22,15 @@ export default function WithdrawRow(props: { groupId: bigint }) {
     }
   }, [amount]);
 
-  const { data } = useSimulateJointMoneyWithdraw({
-    args: [props.groupId, amountBigInt!, to as Address],
+  const { data } = useSimulateJointMoneySetAllowance({
+    args: [props.groupId, to as Address, amountBigInt!],
     query: {
       enabled: amountBigInt !== undefined && amountBigInt > 0n && isAddress(to),
     },
     account: address,
   });
 
-  const { writeContractAsync } = useWriteJointMoneyWithdraw();
+  const { writeContractAsync } = useWriteJointMoneySetAllowance();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,18 +57,18 @@ export default function WithdrawRow(props: { groupId: bigint }) {
   return (
     <form className="flex gap-1" onSubmit={handleSubmit}>
       <Input
-        type="number"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        placeholder="Amount"
-      />
-      <Input
         type="text"
         value={to}
         onChange={(e) => setTo(e.target.value)}
         placeholder="Address"
       />
-      <Button type="submit">Withdraw</Button>
+      <Input
+        type="number"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        placeholder="Amount"
+      />
+      <Button type="submit">Set allowance</Button>
     </form>
   );
 }

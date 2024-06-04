@@ -1,8 +1,9 @@
-import { useWriteJointMoneyRemoveMember } from "../../generated";
 import { Address } from "viem";
 import { useAccount } from "wagmi";
+
 import AddressTag from "../../components/AddressTag";
 import Button from "../../components/Button";
+import { useWriteJointMoneyRemoveMember } from "../../generated";
 
 export default function Member(props: {
   address: Address;

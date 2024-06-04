@@ -5,13 +5,13 @@ const preventDefaultOnWheel = (node: HTMLInputElement) => {
       (e) => {
         e.preventDefault();
       },
-      { passive: false }
+      { passive: false },
     );
   }
 };
 
 export default function Input(
-  props: React.InputHTMLAttributes<HTMLInputElement>
+  props: React.InputHTMLAttributes<HTMLInputElement>,
 ) {
   return (
     <input

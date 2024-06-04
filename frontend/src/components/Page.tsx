@@ -1,4 +1,5 @@
 import { PropsWithChildren } from "react";
+import { Link } from "react-router-dom";
 import {
   useAccount,
   useConnect,
@@ -6,9 +7,9 @@ import {
   useEnsAvatar,
   useEnsName,
 } from "wagmi";
+
 import Button from "./Button";
 import Heading from "./Heading";
-import { Link } from "react-router-dom";
 import InternalLink from "./InternalLink";
 
 function WalletOptions() {

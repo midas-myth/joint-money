@@ -1,6 +1,7 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { cloneDeep, entries, merge, random, set, unset } from "lodash";
 import { useAccount } from "wagmi";
+
 import Button from "../components/Button";
 import Heading from "../components/Heading";
 import Input from "../components/Input";
@@ -73,7 +74,7 @@ function AliasesLoggedIn() {
                   groups: {
                     [random(0, 1000)]: "New Group",
                   },
-                })
+                }),
               );
             }}
           >
@@ -117,7 +118,7 @@ function AliasesLoggedIn() {
                   addresses: {
                     [random(0, 1000)]: "New Address",
                   },
-                })
+                }),
               );
             }}
           >

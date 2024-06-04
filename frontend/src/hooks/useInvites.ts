@@ -1,4 +1,5 @@
 import { useAccount } from "wagmi";
+
 import { useReadJointMoneyGetMyInvites } from "../generated";
 
 export default function useInvites() {

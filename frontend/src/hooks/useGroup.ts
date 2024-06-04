@@ -1,6 +1,7 @@
 import { useThrottle } from "@uidotdev/usehooks";
 import { DecodeErrorResultReturnType } from "viem";
 import { useAccount } from "wagmi";
+
 import {
   jointMoneyAbi,
   useReadJointMoneyGetGroup,
@@ -39,7 +40,7 @@ export default function useGroup(groupId?: bigint) {
 
   const throttledRefetch = useThrottle(
     () => groupQuery.refetch,
-    1000
+    1000,
   ) as unknown as typeof groupQuery.refetch;
 
   useWatchJointMoneyDepositEvent({

@@ -1,5 +1,5 @@
-import { Suspense, lazy } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const LazyMainPage = lazy(() => import("./pages/Main"));
 const LazyGroupCreatePage = lazy(() => import("./pages/GroupCreate"));

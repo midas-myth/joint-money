@@ -1,16 +1,18 @@
 import { useNavigate } from "react-router-dom";
+import { useAccount } from "wagmi";
+
 import Button from "../components/Button";
 import Heading from "../components/Heading";
 import Page from "../components/Page";
-
 import { useWriteJointMoneyCreateGroup } from "../generated";
 
 export default function GroupCreate() {
+  const { address } = useAccount();
   const { writeContractAsync } = useWriteJointMoneyCreateGroup();
   const navigate = useNavigate();
 
   const handleCreateGroup = async () => {
-    await writeContractAsync({ args: [[]] });
+    await writeContractAsync({ args: [[]], account: address });
     navigate("/");
   };
 

@@ -1,5 +1,5 @@
 export default function Heading(
-  props: React.HTMLAttributes<HTMLHeadingElement>
+  props: React.HTMLAttributes<HTMLHeadingElement>,
 ) {
   return (
     <h1

@@ -1,17 +1,17 @@
-import { useParams } from "react-router-dom";
-
 import { useMemo } from "react";
+import { useParams } from "react-router-dom";
 import { useAccount } from "wagmi";
 
 import AddressTag from "../../components/AddressTag";
 import Heading from "../../components/Heading";
 import Page from "../../components/Page";
 import useGroup from "../../hooks/useGroup";
+import DeleteRow from "./DeleteRow";
 import DepositRow from "./DepositRow";
+import Invitee from "./Invitee";
 import InviteRow from "./InviteRow";
 import Member from "./Member";
 import WithdrawRow from "./WithdrawRow";
-import Invitee from "./Invitee";
 
 function convert(value: string, radix: number): bigint {
   const size = 10;
@@ -30,7 +30,7 @@ export default function Group() {
 
   const groupId = useMemo(
     () => (groupIdRaw === undefined ? undefined : convert(groupIdRaw, 36)),
-    [groupIdRaw]
+    [groupIdRaw],
   );
 
   const { data: group, isLoading } = useGroup(groupId);
@@ -108,6 +108,7 @@ export default function Group() {
         {isMember && <DepositRow groupId={group.id} />}
         {isAdmin && <InviteRow groupId={group.id} />}
         {isMember && <WithdrawRow groupId={group.id} />}
+        {isAdmin && <DeleteRow groupId={group.id} />}
         {!isMember && !isAdmin && <div>Read only</div>}
       </div>
     </Page>

@@ -1,12 +1,13 @@
+import { useState } from "react";
+import { Address, isAddress } from "viem";
+import { useAccount } from "wagmi";
+
+import Button from "../../components/Button";
+import Input from "../../components/Input";
 import {
   useSimulateJointMoneyInviteMembers,
   useWriteJointMoneyInviteMembers,
 } from "../../generated";
-import { useState } from "react";
-import { Address, isAddress } from "viem";
-import { useAccount } from "wagmi";
-import Button from "../../components/Button";
-import Input from "../../components/Input";
 
 export default function InviteRow(props: { groupId: bigint }) {
   const { address } = useAccount();

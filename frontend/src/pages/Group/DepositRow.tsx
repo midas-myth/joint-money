@@ -1,11 +1,12 @@
+import { useMemo, useState } from "react";
+import { useAccount } from "wagmi";
+
+import Button from "../../components/Button";
+import Input from "../../components/Input";
 import {
   useSimulateJointMoneyDeposit,
   useWriteJointMoneyDeposit,
 } from "../../generated";
-import { useMemo, useState } from "react";
-import { useAccount } from "wagmi";
-import Button from "../../components/Button";
-import Input from "../../components/Input";
 
 export default function DepositRow(props: { groupId: bigint }) {
   const { address } = useAccount();

@@ -1,8 +1,9 @@
 import { Address } from "viem";
+import { useAccount } from "wagmi";
+
 import AddressTag from "../../components/AddressTag";
 import Button from "../../components/Button";
 import { useWriteJointMoneyCancelInvitation } from "../../generated";
-import { useAccount } from "wagmi";
 
 export default function Invitee(props: { groupId: bigint; address: Address }) {
   const { address } = useAccount();

@@ -4,7 +4,9 @@ import { WagmiProvider } from "wagmi";
 import { config } from "./config";
 import Routing from "./Routing";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } },
+});
 
 export default function App() {
   return (

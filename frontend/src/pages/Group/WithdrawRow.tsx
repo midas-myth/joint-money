@@ -4,10 +4,7 @@ import { useAccount } from "wagmi";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-import {
-  useSimulateJointMoneyWithdraw,
-  useWriteJointMoneyWithdraw,
-} from "../../generated";
+import { useWriteJointMoneyWithdraw } from "../../generated";
 
 export default function WithdrawRow(props: { groupId: bigint }) {
   const { address } = useAccount();
@@ -21,14 +18,6 @@ export default function WithdrawRow(props: { groupId: bigint }) {
       return undefined;
     }
   }, [amount]);
-
-  const { data } = useSimulateJointMoneyWithdraw({
-    args: [props.groupId, amountBigInt!, to as Address],
-    query: {
-      enabled: amountBigInt !== undefined && amountBigInt > 0n && isAddress(to),
-    },
-    account: address,
-  });
 
   const { writeContractAsync } = useWriteJointMoneyWithdraw();
 
@@ -44,12 +33,10 @@ export default function WithdrawRow(props: { groupId: bigint }) {
       return;
     }
 
-    if (!data) {
-      alert("Invalid data");
-      return;
-    }
-
-    await writeContractAsync(data.request);
+    await writeContractAsync({
+      args: [props.groupId, amountBigInt, to as Address],
+      account: address,
+    });
     setAmount("");
     setTo("");
   };

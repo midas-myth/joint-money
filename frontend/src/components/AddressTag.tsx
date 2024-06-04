@@ -1,6 +1,5 @@
 import { Address } from "viem";
-import { useAccount } from "wagmi";
-import { useEnsAvatar, useEnsName } from "wagmi";
+import { useAccount, useEnsAvatar, useEnsName } from "wagmi";
 
 export default function AddressTag(props: { address: Address }) {
   const { address: currentAccountAddress } = useAccount();

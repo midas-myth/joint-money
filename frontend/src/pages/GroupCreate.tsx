@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Heading from "../components/Heading";
 import Page from "../components/Page";
@@ -5,14 +6,13 @@ import Page from "../components/Page";
 import { useWriteJointMoneyCreateGroup } from "../generated";
 
 export default function GroupCreate() {
-  const { data, writeContractAsync } = useWriteJointMoneyCreateGroup();
+  const { writeContractAsync } = useWriteJointMoneyCreateGroup();
+  const navigate = useNavigate();
 
   const handleCreateGroup = async () => {
-    const res = await writeContractAsync({ args: [[]] });
-    console.log(res);
+    await writeContractAsync({ args: [[]] });
+    navigate("/");
   };
-
-  console.log({ data });
 
   return (
     <Page>

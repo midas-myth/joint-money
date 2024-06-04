@@ -1,11 +1,12 @@
+import { isAddress } from "viem";
 import { useAccount } from "wagmi";
 
-import Page from "../components/Page";
-
-import { isAddress } from "viem";
+import AddressTag from "../components/AddressTag";
 import InternalLink from "../components/InternalLink";
+import Page from "../components/Page";
 import { useReadJointMoneyGetMyGroups } from "../generated";
 import useInvites from "../hooks/useInvites";
+
 export default function Main() {
   const { address } = useAccount();
 
@@ -18,7 +19,11 @@ export default function Main() {
 
   return (
     <Page>
-      <div>Address {address}</div>
+      {address && (
+        <div className="flex">
+          Address <AddressTag address={address} />
+        </div>
+      )}
       {invites && invites.length !== 0 && (
         <div>
           You have {invites.length} invites.{" "}

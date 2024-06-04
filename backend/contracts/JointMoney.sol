@@ -26,6 +26,25 @@ contract JointMoney {
 
     error GroupNotFound();
 
+    modifier guardMemberOf(uint id) {
+        address[] memory members = groups[id].members;
+        bool isMember = false;
+        for (uint i = 0; i < members.length; i++) {
+            if (members[i] == msg.sender) {
+                isMember = true;
+                break;
+            }
+        }
+        require(isMember, "You are not a member of this group");
+        _;
+    }
+
+    modifier guardAdminOf(uint id) {
+        address admin = groups[id].admin;
+        require(admin == msg.sender, "You are not an admin of this group");
+        _;
+    }
+
     function getGroup(uint id) public view returns (Group memory) {
         if (groups[id].members.length == 0) {
             revert GroupNotFound();
@@ -58,12 +77,10 @@ contract JointMoney {
         return id;
     }
 
-    function inviteMembers(uint id, address[] memory invites) public {
-        require(
-            groups[id].admin == msg.sender,
-            "Only admin can invite members"
-        );
-
+    function inviteMembers(
+        uint id,
+        address[] memory invites
+    ) public guardAdminOf(id) {
         for (uint i = 0; i < invites.length; i++) {
             // Check if the invitee is already a member
             for (uint j = 0; j < groups[id].members.length; j++) {
@@ -130,9 +147,7 @@ contract JointMoney {
         return groups[id].balance;
     }
 
-    function deposit(uint id) public payable {
-        _ensureIsMember(id);
-
+    function deposit(uint id) public payable guardMemberOf(id) {
         Group storage group = groups[id];
 
         group.balance += msg.value;
@@ -140,9 +155,11 @@ contract JointMoney {
         emit Deposit(id, msg.sender, msg.value);
     }
 
-    function withdraw(uint id, uint amount, address payable to) public {
-        _ensureIsMember(id);
-
+    function withdraw(
+        uint id,
+        uint amount,
+        address payable to
+    ) public guardMemberOf(id) {
         Group storage group = groups[id];
 
         require(group.balance >= amount, "Insufficient balance");
@@ -154,12 +171,7 @@ contract JointMoney {
         emit Withdraw(id, msg.sender, amount);
     }
 
-    function removeMember(uint id, address member) public {
-        require(
-            groups[id].admin == msg.sender,
-            "Only admin can remove members"
-        );
-
+    function removeMember(uint id, address member) public guardAdminOf(id) {
         address[] memory members = groups[id].members;
         bool isMember = false;
         for (uint i = 0; i < members.length; i++) {
@@ -210,12 +222,10 @@ contract JointMoney {
         return myGroups;
     }
 
-    function cancelInvitation(uint id, address invitee) public {
-        require(
-            groups[id].admin == msg.sender,
-            "Only admin can cancel invitations"
-        );
-
+    function cancelInvitation(
+        uint id,
+        address invitee
+    ) public guardAdminOf(id) {
         address[] memory invites = groups[id].invites;
         bool isInvited = false;
         for (uint i = 0; i < invites.length; i++) {
@@ -255,12 +265,7 @@ contract JointMoney {
         return userGroupInvites[msg.sender];
     }
 
-    function deleteGroup(uint id) public {
-        require(
-            groups[id].admin == msg.sender,
-            "Only admin can delete the group"
-        );
-
+    function deleteGroup(uint id) public guardAdminOf(id) {
         // send all balance to admin
         address payable admin = payable(groups[id].admin);
         admin.transfer(groups[id].balance);
@@ -296,17 +301,5 @@ contract JointMoney {
         delete groups[id];
 
         emit GroupDeleted(id);
-    }
-
-    function _ensureIsMember(uint id) private view {
-        address[] memory members = groups[id].members;
-        bool isMember = false;
-        for (uint i = 0; i < members.length; i++) {
-            if (members[i] == msg.sender) {
-                isMember = true;
-                break;
-            }
-        }
-        require(isMember, "You are not a member of this group");
     }
 }

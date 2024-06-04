@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
+import { maxUint256 } from "viem";
 import { useAccount } from "wagmi";
 
 import AddressTag from "../../components/AddressTag";
@@ -33,7 +34,13 @@ export default function Group() {
     [groupIdRaw],
   );
 
-  const { data: group, isLoading } = useGroup(groupId);
+  const {
+    groupQuery: { data: group, isLoading: isGroupLoading },
+    dailyAllowanceQuery: {
+      data: dailyAllowance,
+      isLoading: isDailyAllowanceLoading,
+    },
+  } = useGroup(groupId);
 
   const { isAdmin, isMember } = useMemo(() => {
     if (!group) {
@@ -46,7 +53,7 @@ export default function Group() {
     };
   }, [address, group]);
 
-  if (isLoading) {
+  if (isGroupLoading) {
     return (
       <Page>
         <Heading>Group</Heading>
@@ -104,6 +111,11 @@ export default function Group() {
             </div>
           </div>
           <div>Balance: {group.balance.toString()} wei</div>
+          <div>
+            Your daily allowance:{" "}
+            {displayMoney(dailyAllowance, isDailyAllowanceLoading)}
+            wei
+          </div>
         </div>
         {isMember && <DepositRow groupId={group.id} />}
         {isAdmin && <InviteRow groupId={group.id} />}
@@ -113,4 +125,20 @@ export default function Group() {
       </div>
     </Page>
   );
+}
+
+function displayMoney(value: bigint | undefined, isLoading: boolean) {
+  if (isLoading) {
+    return "Loading...";
+  }
+
+  if (value === undefined) {
+    return "N/A";
+  }
+
+  if (value === maxUint256) {
+    return "∞ wei";
+  }
+
+  return value.toString() + " wei";
 }

@@ -15,6 +15,10 @@ contract JointMoney {
     mapping(address => uint[]) public userGroups;
     mapping(address => uint[]) public userGroupInvites;
 
+    mapping(uint => mapping(address => uint)) public memberDailyAllowanceMap;
+    mapping(uint => mapping(address => uint)) public memberDailySpentMap;
+    mapping(uint => mapping(address => uint)) public memberLastSpentAtMap;
+
     event GroupCreated(uint id, address admin, address[] invites);
     event MembersInvited(uint id, address[] invites);
     event MemberAccepted(uint id, address member);
@@ -23,6 +27,7 @@ contract JointMoney {
     event MemberRemoved(uint id, address member);
     event InvitationCancelled(uint id, address invitee);
     event GroupDeleted(uint id);
+    event AllowanceSet(uint id, address member, uint amount);
 
     error GroupNotFound();
 
@@ -65,8 +70,15 @@ contract JointMoney {
 
         address[] memory members = new address[](1);
         members[0] = msg.sender;
-        groups[id] = Group(id, msg.sender, members, invites, msg.value);
+        groups[id] = Group({
+            id: id,
+            admin: msg.sender,
+            members: members,
+            invites: invites,
+            balance: msg.value
+        });
         userGroups[msg.sender].push(id);
+        memberDailyAllowanceMap[id][msg.sender] = type(uint).max;
 
         for (uint i = 0; i < invites.length; i++) {
             userGroupInvites[invites[i]].push(id);
@@ -163,6 +175,29 @@ contract JointMoney {
         Group storage group = groups[id];
 
         require(group.balance >= amount, "Insufficient balance");
+
+        uint memberDailySpent = memberDailySpentMap[id][msg.sender];
+        uint lastSpentAt = memberLastSpentAtMap[id][msg.sender];
+        uint memberDailyAllowance = memberDailyAllowanceMap[id][msg.sender];
+
+        bool isToday = lastSpentAt / 86400 == block.timestamp / 86400;
+
+        uint leftToday = 0;
+        if (isToday) {
+            leftToday = memberDailyAllowance - memberDailySpent;
+        } else {
+            leftToday = memberDailyAllowance;
+        }
+        require(leftToday >= amount, "Daily allowance exceeded");
+
+        if (isToday) {
+            memberDailySpent += amount;
+        } else {
+            memberDailySpent = amount;
+        }
+
+        memberDailySpentMap[id][msg.sender] = memberDailySpent;
+        memberLastSpentAtMap[id][msg.sender] = block.timestamp;
 
         group.balance -= amount;
 
@@ -301,5 +336,25 @@ contract JointMoney {
         delete groups[id];
 
         emit GroupDeleted(id);
+    }
+
+    function setAllowance(
+        uint id,
+        address member,
+        uint amount
+    ) public guardAdminOf(id) {
+        address[] memory members = groups[id].members;
+        bool isMember = false;
+        for (uint i = 0; i < members.length; i++) {
+            if (members[i] == member) {
+                isMember = true;
+                break;
+            }
+        }
+        require(isMember, "Member not found");
+
+        memberDailyAllowanceMap[id][member] = amount;
+
+        emit AllowanceSet(id, member, amount);
     }
 }

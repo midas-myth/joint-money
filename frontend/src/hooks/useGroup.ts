@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 import {
   jointMoneyAbi,
   useReadJointMoneyGetGroup,
+  useReadJointMoneyMemberDailyAllowanceMap,
   useWatchJointMoneyDepositEvent,
   useWatchJointMoneyInvitationCancelledEvent,
   useWatchJointMoneyMemberAcceptedEvent,
@@ -38,8 +39,19 @@ export default function useGroup(groupId?: bigint) {
     account: address,
   });
 
+  const dailyAllowanceQuery = useReadJointMoneyMemberDailyAllowanceMap({
+    account: address,
+    args: [groupId!, address!],
+    query: {
+      enabled: groupId !== undefined && address !== undefined,
+    },
+  });
+
   const throttledRefetch = useThrottle(
-    () => groupQuery.refetch,
+    () => () => {
+      groupQuery.refetch();
+      dailyAllowanceQuery.refetch();
+    },
     1000,
   ) as unknown as typeof groupQuery.refetch;
 
@@ -115,5 +127,5 @@ export default function useGroup(groupId?: bigint) {
     },
   });
 
-  return groupQuery;
+  return { groupQuery, dailyAllowanceQuery };
 }

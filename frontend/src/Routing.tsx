@@ -1,6 +1,8 @@
 import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import FullscreenLoader from "./components/FullScreenLoader";
+
 const LazyMainPage = lazy(() => import("./pages/Main"));
 const LazyGroupCreatePage = lazy(() => import("./pages/GroupCreate"));
 const LazyGroupPage = lazy(() => import("./pages/Group"));
@@ -11,7 +13,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<FullscreenLoader />}>
         <LazyMainPage />
       </Suspense>
     ),
@@ -19,7 +21,7 @@ const router = createBrowserRouter([
   {
     path: "/groups/create",
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<FullscreenLoader />}>
         <LazyGroupCreatePage />
       </Suspense>
     ),
@@ -27,7 +29,7 @@ const router = createBrowserRouter([
   {
     path: "/groups/:id",
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<FullscreenLoader />}>
         <LazyGroupPage />
       </Suspense>
     ),
@@ -35,7 +37,7 @@ const router = createBrowserRouter([
   {
     path: "/invites",
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<FullscreenLoader />}>
         <LazyInvitesPage />
       </Suspense>
     ),
@@ -43,7 +45,7 @@ const router = createBrowserRouter([
   {
     path: "/aliases",
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<FullscreenLoader />}>
         <LazyAliasesPage />
       </Suspense>
     ),

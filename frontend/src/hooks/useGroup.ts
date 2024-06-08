@@ -1,144 +1,118 @@
-import { useThrottle } from "@uidotdev/usehooks";
-import { DecodeErrorResultReturnType } from "viem";
-import { useAccount } from "wagmi";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { createClient } from "graphql-ws";
 
-import {
-  jointMoneyAbi,
-  useReadJointMoneyGetGroup,
-  useReadJointMoneyMemberDailyAllowanceMap,
-  useWatchJointMoneyAllowanceSetEvent,
-  useWatchJointMoneyDepositEvent,
-  useWatchJointMoneyInvitationCancelledEvent,
-  useWatchJointMoneyMemberAcceptedEvent,
-  useWatchJointMoneyMemberRemovedEvent,
-  useWatchJointMoneyMembersInvitedEvent,
-  useWatchJointMoneyWithdrawEvent,
-} from "../generated";
+const client = createClient({
+  webSocketImpl: WebSocket,
+  url: `ws://localhost:4350/graphql`,
+});
 
-export default function useGroup(groupId?: bigint) {
-  const { address } = useAccount();
+const groupSubscripton = /* GraphQL */ `
+  subscription GetGroup($id: String!) {
+    groupById(id: $id) {
+      id
+      admin
+      members {
+        address
+        dailyAllowance
+        dailySpent
+        lastSpentAt
+      }
+      tokenAmounts {
+        tokenAddress
+        amount
+      }
+    }
+  }
+`;
 
-  const groupQuery = useReadJointMoneyGetGroup({
-    args: [groupId!],
-    query: {
-      enabled: groupId !== undefined,
-      retry(failureCount, error) {
-        if (error.cause && "data" in error.cause) {
-          const e = error.cause.data as DecodeErrorResultReturnType<
-            typeof jointMoneyAbi,
-            "GroupNotFound"
-          >;
+const subscriptionMap = new Map<
+  string,
+  {
+    cleanup: () => void;
+    count: number;
+  }
+>();
 
-          if (e.errorName === "GroupNotFound") {
-            return false;
-          }
+export default function useGroup(groupId?: string) {
+  const queryClient = useQueryClient();
+
+  const data = useQuery({
+    queryKey: ["group", groupId],
+    enabled: groupId !== undefined,
+    staleTime: Infinity,
+  });
+
+  useEffect(() => {
+    const hasSubscription = subscriptionMap.get(groupId!);
+
+    if (!hasSubscription) {
+      console.log(
+        "Group did not have subscription, creating one",
+        groupId!,
+        subscriptionMap,
+      );
+
+      const cleanUp = client.subscribe(
+        {
+          query: groupSubscripton,
+          variables: { id: groupId! },
+        },
+        {
+          next(value) {
+            queryClient.setQueriesData(
+              {
+                queryKey: ["group", groupId!],
+              },
+              value.data,
+            );
+          },
+          error(error) {
+            console.error(error);
+          },
+          complete() {
+            queryClient.invalidateQueries({
+              queryKey: ["group", groupId!],
+            });
+          },
+        },
+      );
+
+      subscriptionMap.set(groupId!, {
+        cleanup: cleanUp,
+        count: 1,
+      });
+
+      console.log("Subscribed to group", groupId!, subscriptionMap);
+    } else {
+      subscriptionMap.set(groupId!, {
+        cleanup: hasSubscription.cleanup,
+        count: hasSubscription.count + 1,
+      });
+    }
+
+    return () => {
+      console.log("Cleaning up group subscription", groupId!);
+
+      const hasSubscription = subscriptionMap.get(groupId!);
+
+      if (hasSubscription) {
+        if (hasSubscription.count === 1) {
+          console.log("Unsubscribing from group", groupId!);
+
+          hasSubscription.cleanup();
+          subscriptionMap.delete(groupId!);
+        } else {
+          console.log("Decreasing count for group", groupId!);
+
+          subscriptionMap.set(groupId!, {
+            cleanup: hasSubscription.cleanup,
+            count: hasSubscription.count - 1,
+          });
         }
+      }
+    };
+  }, [groupId, queryClient]);
 
-        return failureCount < 3;
-      },
-    },
-    account: address,
-  });
-
-  const dailyAllowanceQuery = useReadJointMoneyMemberDailyAllowanceMap({
-    account: address,
-    args: [groupId!, address!],
-    query: {
-      enabled: groupId !== undefined && address !== undefined,
-    },
-  });
-
-  const throttledRefetch = useThrottle(
-    () => () => {
-      groupQuery.refetch();
-      dailyAllowanceQuery.refetch();
-    },
-    1000,
-  ) as unknown as typeof groupQuery.refetch;
-
-  useWatchJointMoneyDepositEvent({
-    args: {
-      id: groupId!,
-    },
-    enabled: groupId !== undefined,
-    onLogs: async () => {
-      console.log("Deposit event");
-
-      throttledRefetch();
-    },
-  });
-
-  useWatchJointMoneyWithdrawEvent({
-    args: {
-      id: groupId!,
-    },
-    enabled: groupId !== undefined,
-    onLogs: () => {
-      console.log("Withdraw event");
-
-      throttledRefetch();
-    },
-  });
-
-  useWatchJointMoneyMemberAcceptedEvent({
-    args: {
-      id: groupId!,
-    },
-    enabled: groupId !== undefined,
-    onLogs: () => {
-      console.log("Member accepted event");
-
-      throttledRefetch();
-    },
-  });
-
-  useWatchJointMoneyMemberRemovedEvent({
-    args: {
-      id: groupId!,
-    },
-    enabled: groupId !== undefined,
-    onLogs: () => {
-      console.log("Member removed event");
-
-      throttledRefetch();
-    },
-  });
-
-  useWatchJointMoneyMembersInvitedEvent({
-    args: {
-      id: groupId!,
-    },
-    enabled: groupId !== undefined,
-    onLogs: () => {
-      console.log("Members invited event");
-
-      throttledRefetch();
-    },
-  });
-
-  useWatchJointMoneyInvitationCancelledEvent({
-    args: {
-      id: groupId!,
-    },
-    enabled: groupId !== undefined,
-    onLogs: () => {
-      console.log("Invitation cancelled event");
-
-      throttledRefetch();
-    },
-  });
-
-  useWatchJointMoneyAllowanceSetEvent({
-    args: {
-      id: groupId!,
-    },
-    enabled: groupId !== undefined,
-    onLogs: () => {
-      console.log("Allowance set event");
-
-      throttledRefetch();
-    },
-  });
-
-  return { groupQuery, dailyAllowanceQuery };
+  return data;
 }

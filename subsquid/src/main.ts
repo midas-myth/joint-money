@@ -1,9 +1,10 @@
 import { EvmBatchProcessor } from "@subsquid/evm-processor";
 import { TypeormDatabase } from "@subsquid/typeorm-store";
+import { ethers } from "ethers";
 
 import * as JointMoneyErc20Abi from "./abi/JointMoneyErc20";
 
-import { Group, Invite, Member, TokenAmount } from "./model";
+import { Group, Invite, Membership, TokenAmount } from "./model";
 
 const hardhatUrl = "http://0.0.0.0:8545/";
 
@@ -42,9 +43,27 @@ processor.run(db, async (ctx) => {
         const { id, admin } =
           JointMoneyErc20Abi.events.GroupCreated.decode(log);
 
-        const group = new Group({ id: id.toString(), admin });
+        const group = new Group({
+          id: id.toString(),
+          admin,
+          members: [],
+          invites: [],
+          tokenAmounts: [],
+        });
+
+        const newMember = new Membership({
+          id: id + "-" + admin,
+          group,
+          address: admin,
+          dailyAllowance: ethers.MaxUint256,
+          dailySpent: 0n,
+          lastSpentAt: 0n,
+        });
+
+        group.members.push(newMember);
 
         await ctx.store.save(group);
+        await ctx.store.save(newMember);
         ctx.log.info(`Group created: ${group.id}`);
       } else if (JointMoneyErc20Abi.events.GroupAccepted.is(log)) {
         const { id, member } =
@@ -52,8 +71,20 @@ processor.run(db, async (ctx) => {
 
         const group = await fetchGroup(id.toString());
 
-        group.members.push(new Member({ address: member }));
+        const newMember = new Membership({
+          id: id + "-" + member,
+          address: member,
+          dailyAllowance: 0n,
+          group,
+          dailySpent: 0n,
+          lastSpentAt: 0n,
+        });
+
+        group.members.push(newMember);
+
         await ctx.store.save(group);
+        await ctx.store.save(newMember);
+
         ctx.log.info(`Member added to group: ${group.id}`);
       } else if (JointMoneyErc20Abi.events.GroupDeposited.is(log)) {
         const { id, member, tokenAddress, amount } =
@@ -77,10 +108,20 @@ processor.run(db, async (ctx) => {
         const { id, invitee } =
           JointMoneyErc20Abi.events.GroupInvited.decode(log);
 
-        const invite = new Invite({ groupId: id.toString(), invitee });
+        const group = await fetchGroup(id.toString());
 
+        const invite = new Invite({
+          id: id + "-" + invitee,
+          group,
+          invitee,
+        });
+
+        group.invites.push(invite);
+
+        await ctx.store.save(group);
         await ctx.store.save(invite);
-        ctx.log.info(`Invite created for group: ${invite.groupId}`);
+
+        ctx.log.info(`Invite created for group: ${invite.group.id}`);
       } else if (JointMoneyErc20Abi.events.GroupWithdrawn.is(log)) {
         const { id, member, token, amount } =
           JointMoneyErc20Abi.events.GroupWithdrawn.decode(log);

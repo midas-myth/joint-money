@@ -1,12 +1,15 @@
 type Group @entity {
   id: ID!
   admin: String!
-  members: [Member!]!
   tokenAmounts: [TokenAmount!]!
+  members: [Membership!]! @derivedFrom(field: "group")
+  invites: [Invite!]! @derivedFrom(field: "group")
 }
 
-type Member {
-  address: ID!
+type Membership @entity @index(fields: ["group", "address"], unique: true) {
+  id: ID!
+  group: Group!
+  address: String! @index
   dailyAllowance: BigInt!
   dailySpent: BigInt!
   lastSpentAt: BigInt!
@@ -17,7 +20,8 @@ type TokenAmount {
   amount: BigInt!
 }
 
-type Invite @entity @index(fields: ["invitee", "groupId"], unique: true) {
+type Invite @entity @index(fields: ["invitee", "group"], unique: true) {
+  id: ID!
+  group: Group!
   invitee: String! @index
-  groupId: String! @index
 }

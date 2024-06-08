@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "gen": "npx squid-typeorm-codegen && npx tsc",
-    "drop": "npx tsx scripts/drop.ts"
+    "mig:gen": "npx squid-typeorm-migration generate",
+    "mig:apply": "npx squid-typeorm-migration apply",
+    "drop": "npx tsx scripts/drop.ts",
+    "gen:all": "npm run gen && rm -rf db/migrations && npm run drop && npm run mig:gen && npm run mig:apply && node -r dotenv/config lib/main.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +20,7 @@
     "@subsquid/typeorm-migration": "^1.3.0",
     "@subsquid/typeorm-store": "^1.5.1",
     "dotenv": "^16.4.5",
+    "ethers": "^6.13.0",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {

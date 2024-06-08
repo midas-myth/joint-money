@@ -4,18 +4,23 @@ import { useAccount } from "wagmi";
 import AddressTag from "../components/AddressTag";
 import InternalLink from "../components/InternalLink";
 import Page from "../components/Page";
-import { useReadJointMoneyGetMyGroups } from "../generated";
-import useInvites from "../hooks/useInvites";
+import useGroup from "../hooks/useGroup";
+
+// import { useReadJointMoneyGetMyGroups } from "../generated";
+// import useInvites from "../hooks/useInvites";
 
 export default function Main() {
   const { address } = useAccount();
 
-  const { data } = useReadJointMoneyGetMyGroups({
-    query: { enabled: address && isAddress(address) },
-    account: address,
-  });
+  // const { data } = useReadJointMoneyGetMyGroups({
+  //   query: { enabled: address && isAddress(address) },
+  //   account: address,
+  // });
 
-  const { data: invites } = useInvites();
+  // const { data: invites } = useInvites();
+  const { data } = useGroup("1");
+
+  console.log(data);
 
   return (
     <Page>
@@ -24,15 +29,15 @@ export default function Main() {
           Address <AddressTag address={address} />
         </div>
       )}
-      {invites && invites.length !== 0 && (
+      {/* {invites && invites.length !== 0 && (
         <div>
           You have {invites.length} invites.{" "}
           <InternalLink to="/invites">View invites</InternalLink>.
         </div>
-      )}
+      )} */}
       <div>
         <div>Your groups</div>
-        {!data && <div>No data</div>}
+        {/* {!data && <div>No data</div>}
         {data && data.length === 0 && (
           <>
             <div>No groups</div>
@@ -52,7 +57,7 @@ export default function Main() {
               </div>
             ))}
           </div>
-        )}
+        )} */}
         <InternalLink to="/groups/create">Create a group</InternalLink>
       </div>
     </Page>

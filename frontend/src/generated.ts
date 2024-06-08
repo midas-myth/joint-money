@@ -6,12 +6,718 @@ import {
 } from 'wagmi/codegen'
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ERC20
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const erc20Abi = [
+  {
+    type: 'error',
+    inputs: [
+      { name: 'spender', internalType: 'address', type: 'address' },
+      { name: 'allowance', internalType: 'uint256', type: 'uint256' },
+      { name: 'needed', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ERC20InsufficientAllowance',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'balance', internalType: 'uint256', type: 'uint256' },
+      { name: 'needed', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ERC20InsufficientBalance',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'approver', internalType: 'address', type: 'address' }],
+    name: 'ERC20InvalidApprover',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'receiver', internalType: 'address', type: 'address' }],
+    name: 'ERC20InvalidReceiver',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'sender', internalType: 'address', type: 'address' }],
+    name: 'ERC20InvalidSender',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'spender', internalType: 'address', type: 'address' }],
+    name: 'ERC20InvalidSpender',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'owner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'spender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'value',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Approval',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address', indexed: true },
+      { name: 'to', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'value',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Transfer',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'owner', internalType: 'address', type: 'address' },
+      { name: 'spender', internalType: 'address', type: 'address' },
+    ],
+    name: 'allowance',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'spender', internalType: 'address', type: 'address' },
+      { name: 'value', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'approve',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'decimals',
+    outputs: [{ name: '', internalType: 'uint8', type: 'uint8' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'name',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'symbol',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'totalSupply',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'value', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'transfer',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'value', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'transferFrom',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'nonpayable',
+  },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ERC20Mock
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const erc20MockAbi = [
+  {
+    type: 'constructor',
+    inputs: [
+      { name: 'name', internalType: 'string', type: 'string' },
+      { name: 'symbol', internalType: 'string', type: 'string' },
+      { name: 'initialAccount', internalType: 'address', type: 'address' },
+      { name: 'initialBalance', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'spender', internalType: 'address', type: 'address' },
+      { name: 'allowance', internalType: 'uint256', type: 'uint256' },
+      { name: 'needed', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ERC20InsufficientAllowance',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'balance', internalType: 'uint256', type: 'uint256' },
+      { name: 'needed', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ERC20InsufficientBalance',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'approver', internalType: 'address', type: 'address' }],
+    name: 'ERC20InvalidApprover',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'receiver', internalType: 'address', type: 'address' }],
+    name: 'ERC20InvalidReceiver',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'sender', internalType: 'address', type: 'address' }],
+    name: 'ERC20InvalidSender',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'spender', internalType: 'address', type: 'address' }],
+    name: 'ERC20InvalidSpender',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'owner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'spender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'value',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Approval',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address', indexed: true },
+      { name: 'to', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'value',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Transfer',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'owner', internalType: 'address', type: 'address' },
+      { name: 'spender', internalType: 'address', type: 'address' },
+    ],
+    name: 'allowance',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'spender', internalType: 'address', type: 'address' },
+      { name: 'value', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'approve',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'decimals',
+    outputs: [{ name: '', internalType: 'uint8', type: 'uint8' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'name',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'symbol',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'totalSupply',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'value', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'transfer',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'value', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'transferFrom',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'nonpayable',
+  },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// IERC1155Errors
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const ierc1155ErrorsAbi = [
+  {
+    type: 'error',
+    inputs: [
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'balance', internalType: 'uint256', type: 'uint256' },
+      { name: 'needed', internalType: 'uint256', type: 'uint256' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ERC1155InsufficientBalance',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'approver', internalType: 'address', type: 'address' }],
+    name: 'ERC1155InvalidApprover',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'idsLength', internalType: 'uint256', type: 'uint256' },
+      { name: 'valuesLength', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ERC1155InvalidArrayLength',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'operator', internalType: 'address', type: 'address' }],
+    name: 'ERC1155InvalidOperator',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'receiver', internalType: 'address', type: 'address' }],
+    name: 'ERC1155InvalidReceiver',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'sender', internalType: 'address', type: 'address' }],
+    name: 'ERC1155InvalidSender',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'operator', internalType: 'address', type: 'address' },
+      { name: 'owner', internalType: 'address', type: 'address' },
+    ],
+    name: 'ERC1155MissingApprovalForAll',
+  },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// IERC20
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const ierc20Abi = [
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'owner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'spender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'value',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Approval',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address', indexed: true },
+      { name: 'to', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'value',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Transfer',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'owner', internalType: 'address', type: 'address' },
+      { name: 'spender', internalType: 'address', type: 'address' },
+    ],
+    name: 'allowance',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'spender', internalType: 'address', type: 'address' },
+      { name: 'value', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'approve',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'totalSupply',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'value', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'transfer',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'value', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'transferFrom',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'nonpayable',
+  },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// IERC20Errors
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const ierc20ErrorsAbi = [
+  {
+    type: 'error',
+    inputs: [
+      { name: 'spender', internalType: 'address', type: 'address' },
+      { name: 'allowance', internalType: 'uint256', type: 'uint256' },
+      { name: 'needed', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ERC20InsufficientAllowance',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'balance', internalType: 'uint256', type: 'uint256' },
+      { name: 'needed', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ERC20InsufficientBalance',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'approver', internalType: 'address', type: 'address' }],
+    name: 'ERC20InvalidApprover',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'receiver', internalType: 'address', type: 'address' }],
+    name: 'ERC20InvalidReceiver',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'sender', internalType: 'address', type: 'address' }],
+    name: 'ERC20InvalidSender',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'spender', internalType: 'address', type: 'address' }],
+    name: 'ERC20InvalidSpender',
+  },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// IERC20Metadata
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const ierc20MetadataAbi = [
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'owner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'spender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'value',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Approval',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address', indexed: true },
+      { name: 'to', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'value',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Transfer',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'owner', internalType: 'address', type: 'address' },
+      { name: 'spender', internalType: 'address', type: 'address' },
+    ],
+    name: 'allowance',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'spender', internalType: 'address', type: 'address' },
+      { name: 'value', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'approve',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'decimals',
+    outputs: [{ name: '', internalType: 'uint8', type: 'uint8' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'name',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'symbol',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'totalSupply',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'value', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'transfer',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'value', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'transferFrom',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'nonpayable',
+  },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// IERC721Errors
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const ierc721ErrorsAbi = [
+  {
+    type: 'error',
+    inputs: [
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+      { name: 'owner', internalType: 'address', type: 'address' },
+    ],
+    name: 'ERC721IncorrectOwner',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'operator', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ERC721InsufficientApproval',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'approver', internalType: 'address', type: 'address' }],
+    name: 'ERC721InvalidApprover',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'operator', internalType: 'address', type: 'address' }],
+    name: 'ERC721InvalidOperator',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
+    name: 'ERC721InvalidOwner',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'receiver', internalType: 'address', type: 'address' }],
+    name: 'ERC721InvalidReceiver',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'sender', internalType: 'address', type: 'address' }],
+    name: 'ERC721InvalidSender',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'ERC721NonexistentToken',
+  },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // JointMoney
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/**
- *
- */
 export const jointMoneyAbi = [
   { type: 'error', inputs: [], name: 'GroupNotFound' },
   {
@@ -362,19 +1068,306 @@ export const jointMoneyAbi = [
   },
 ] as const
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// JointMoneyErc20
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
  *
  */
-export const jointMoneyAddress = {
+export const jointMoneyErc20Abi = [
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
+      {
+        name: 'member',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'GroupAccepted',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
+      {
+        name: 'member',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'amount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'GroupAllowanceSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
+      {
+        name: 'admin',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'GroupCreated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
+      {
+        name: 'member',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'tokenAddress',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'amount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'GroupDeposited',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
+      {
+        name: 'invitee',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'GroupInvitationCancelled',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
+      {
+        name: 'invitee',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'GroupInvited',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
+      {
+        name: 'member',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'GroupLeft',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
+      {
+        name: 'member',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'token',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'amount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'GroupWithdrawn',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'groupId', internalType: 'uint256', type: 'uint256' }],
+    name: 'accept',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'groupId', internalType: 'uint256', type: 'uint256' },
+      { name: 'invitee', internalType: 'address', type: 'address' },
+    ],
+    name: 'cancelInvitatioin',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'createGroup',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'groupId', internalType: 'uint256', type: 'uint256' },
+      { name: 'tokenAddress', internalType: 'address', type: 'address' },
+      { name: 'amount', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'deposit',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'groupId', internalType: 'uint256', type: 'uint256' },
+      { name: 'token', internalType: 'address', type: 'address' },
+    ],
+    name: 'getBalance',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'groupCount',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    name: 'groupSettings',
+    outputs: [{ name: 'admin', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: '', internalType: 'address', type: 'address' },
+    ],
+    name: 'groupTokenAmount',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: '', internalType: 'address', type: 'address' },
+    ],
+    name: 'groupUserSettings',
+    outputs: [
+      { name: 'isMember', internalType: 'bool', type: 'bool' },
+      { name: 'dailyAllowance', internalType: 'uint256', type: 'uint256' },
+      { name: 'dailySpent', internalType: 'uint256', type: 'uint256' },
+      { name: 'lastSpentAt', internalType: 'uint256', type: 'uint256' },
+      { name: 'isInvited', internalType: 'bool', type: 'bool' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'groupId', internalType: 'uint256', type: 'uint256' },
+      { name: 'invitee', internalType: 'address', type: 'address' },
+    ],
+    name: 'invite',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'groupId', internalType: 'uint256', type: 'uint256' }],
+    name: 'leaveGroup',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'groupId', internalType: 'uint256', type: 'uint256' },
+      { name: 'member', internalType: 'address', type: 'address' },
+    ],
+    name: 'removeMember',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'groupId', internalType: 'uint256', type: 'uint256' },
+      { name: 'user', internalType: 'address', type: 'address' },
+      { name: 'amount', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'setAllowance',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'groupId', internalType: 'uint256', type: 'uint256' },
+      { name: 'tokenAddress', internalType: 'address', type: 'address' },
+      { name: 'amount', internalType: 'uint256', type: 'uint256' },
+      { name: 'to', internalType: 'address', type: 'address' },
+    ],
+    name: 'withdraw',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+] as const
+
+/**
+ *
+ */
+export const jointMoneyErc20Address = {
   31337: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
 } as const
 
 /**
  *
  */
-export const jointMoneyConfig = {
-  address: jointMoneyAddress,
-  abi: jointMoneyAbi,
+export const jointMoneyErc20Config = {
+  address: jointMoneyErc20Address,
+  abi: jointMoneyErc20Abi,
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -382,494 +1375,1334 @@ export const jointMoneyConfig = {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__
+ */
+export const useReadErc20 = /*#__PURE__*/ createUseReadContract({
+  abi: erc20Abi,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"allowance"`
+ */
+export const useReadErc20Allowance = /*#__PURE__*/ createUseReadContract({
+  abi: erc20Abi,
+  functionName: 'allowance',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"balanceOf"`
+ */
+export const useReadErc20BalanceOf = /*#__PURE__*/ createUseReadContract({
+  abi: erc20Abi,
+  functionName: 'balanceOf',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"decimals"`
+ */
+export const useReadErc20Decimals = /*#__PURE__*/ createUseReadContract({
+  abi: erc20Abi,
+  functionName: 'decimals',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"name"`
+ */
+export const useReadErc20Name = /*#__PURE__*/ createUseReadContract({
+  abi: erc20Abi,
+  functionName: 'name',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"symbol"`
+ */
+export const useReadErc20Symbol = /*#__PURE__*/ createUseReadContract({
+  abi: erc20Abi,
+  functionName: 'symbol',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"totalSupply"`
+ */
+export const useReadErc20TotalSupply = /*#__PURE__*/ createUseReadContract({
+  abi: erc20Abi,
+  functionName: 'totalSupply',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__
+ */
+export const useWriteErc20 = /*#__PURE__*/ createUseWriteContract({
+  abi: erc20Abi,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"approve"`
+ */
+export const useWriteErc20Approve = /*#__PURE__*/ createUseWriteContract({
+  abi: erc20Abi,
+  functionName: 'approve',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transfer"`
+ */
+export const useWriteErc20Transfer = /*#__PURE__*/ createUseWriteContract({
+  abi: erc20Abi,
+  functionName: 'transfer',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useWriteErc20TransferFrom = /*#__PURE__*/ createUseWriteContract({
+  abi: erc20Abi,
+  functionName: 'transferFrom',
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__
+ */
+export const useSimulateErc20 = /*#__PURE__*/ createUseSimulateContract({
+  abi: erc20Abi,
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"approve"`
+ */
+export const useSimulateErc20Approve = /*#__PURE__*/ createUseSimulateContract({
+  abi: erc20Abi,
+  functionName: 'approve',
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transfer"`
+ */
+export const useSimulateErc20Transfer = /*#__PURE__*/ createUseSimulateContract(
+  { abi: erc20Abi, functionName: 'transfer' },
+)
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20Abi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useSimulateErc20TransferFrom =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: erc20Abi,
+    functionName: 'transferFrom',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc20Abi}__
+ */
+export const useWatchErc20Event = /*#__PURE__*/ createUseWatchContractEvent({
+  abi: erc20Abi,
+})
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc20Abi}__ and `eventName` set to `"Approval"`
+ */
+export const useWatchErc20ApprovalEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: erc20Abi,
+    eventName: 'Approval',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc20Abi}__ and `eventName` set to `"Transfer"`
+ */
+export const useWatchErc20TransferEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: erc20Abi,
+    eventName: 'Transfer',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20MockAbi}__
+ */
+export const useReadErc20Mock = /*#__PURE__*/ createUseReadContract({
+  abi: erc20MockAbi,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20MockAbi}__ and `functionName` set to `"allowance"`
+ */
+export const useReadErc20MockAllowance = /*#__PURE__*/ createUseReadContract({
+  abi: erc20MockAbi,
+  functionName: 'allowance',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20MockAbi}__ and `functionName` set to `"balanceOf"`
+ */
+export const useReadErc20MockBalanceOf = /*#__PURE__*/ createUseReadContract({
+  abi: erc20MockAbi,
+  functionName: 'balanceOf',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20MockAbi}__ and `functionName` set to `"decimals"`
+ */
+export const useReadErc20MockDecimals = /*#__PURE__*/ createUseReadContract({
+  abi: erc20MockAbi,
+  functionName: 'decimals',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20MockAbi}__ and `functionName` set to `"name"`
+ */
+export const useReadErc20MockName = /*#__PURE__*/ createUseReadContract({
+  abi: erc20MockAbi,
+  functionName: 'name',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20MockAbi}__ and `functionName` set to `"symbol"`
+ */
+export const useReadErc20MockSymbol = /*#__PURE__*/ createUseReadContract({
+  abi: erc20MockAbi,
+  functionName: 'symbol',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link erc20MockAbi}__ and `functionName` set to `"totalSupply"`
+ */
+export const useReadErc20MockTotalSupply = /*#__PURE__*/ createUseReadContract({
+  abi: erc20MockAbi,
+  functionName: 'totalSupply',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20MockAbi}__
+ */
+export const useWriteErc20Mock = /*#__PURE__*/ createUseWriteContract({
+  abi: erc20MockAbi,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20MockAbi}__ and `functionName` set to `"approve"`
+ */
+export const useWriteErc20MockApprove = /*#__PURE__*/ createUseWriteContract({
+  abi: erc20MockAbi,
+  functionName: 'approve',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20MockAbi}__ and `functionName` set to `"transfer"`
+ */
+export const useWriteErc20MockTransfer = /*#__PURE__*/ createUseWriteContract({
+  abi: erc20MockAbi,
+  functionName: 'transfer',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link erc20MockAbi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useWriteErc20MockTransferFrom =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: erc20MockAbi,
+    functionName: 'transferFrom',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20MockAbi}__
+ */
+export const useSimulateErc20Mock = /*#__PURE__*/ createUseSimulateContract({
+  abi: erc20MockAbi,
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20MockAbi}__ and `functionName` set to `"approve"`
+ */
+export const useSimulateErc20MockApprove =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: erc20MockAbi,
+    functionName: 'approve',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20MockAbi}__ and `functionName` set to `"transfer"`
+ */
+export const useSimulateErc20MockTransfer =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: erc20MockAbi,
+    functionName: 'transfer',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link erc20MockAbi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useSimulateErc20MockTransferFrom =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: erc20MockAbi,
+    functionName: 'transferFrom',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc20MockAbi}__
+ */
+export const useWatchErc20MockEvent = /*#__PURE__*/ createUseWatchContractEvent(
+  { abi: erc20MockAbi },
+)
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc20MockAbi}__ and `eventName` set to `"Approval"`
+ */
+export const useWatchErc20MockApprovalEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: erc20MockAbi,
+    eventName: 'Approval',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link erc20MockAbi}__ and `eventName` set to `"Transfer"`
+ */
+export const useWatchErc20MockTransferEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: erc20MockAbi,
+    eventName: 'Transfer',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ierc20Abi}__
+ */
+export const useReadIerc20 = /*#__PURE__*/ createUseReadContract({
+  abi: ierc20Abi,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ierc20Abi}__ and `functionName` set to `"allowance"`
+ */
+export const useReadIerc20Allowance = /*#__PURE__*/ createUseReadContract({
+  abi: ierc20Abi,
+  functionName: 'allowance',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ierc20Abi}__ and `functionName` set to `"balanceOf"`
+ */
+export const useReadIerc20BalanceOf = /*#__PURE__*/ createUseReadContract({
+  abi: ierc20Abi,
+  functionName: 'balanceOf',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ierc20Abi}__ and `functionName` set to `"totalSupply"`
+ */
+export const useReadIerc20TotalSupply = /*#__PURE__*/ createUseReadContract({
+  abi: ierc20Abi,
+  functionName: 'totalSupply',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ierc20Abi}__
+ */
+export const useWriteIerc20 = /*#__PURE__*/ createUseWriteContract({
+  abi: ierc20Abi,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ierc20Abi}__ and `functionName` set to `"approve"`
+ */
+export const useWriteIerc20Approve = /*#__PURE__*/ createUseWriteContract({
+  abi: ierc20Abi,
+  functionName: 'approve',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ierc20Abi}__ and `functionName` set to `"transfer"`
+ */
+export const useWriteIerc20Transfer = /*#__PURE__*/ createUseWriteContract({
+  abi: ierc20Abi,
+  functionName: 'transfer',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ierc20Abi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useWriteIerc20TransferFrom = /*#__PURE__*/ createUseWriteContract({
+  abi: ierc20Abi,
+  functionName: 'transferFrom',
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ierc20Abi}__
+ */
+export const useSimulateIerc20 = /*#__PURE__*/ createUseSimulateContract({
+  abi: ierc20Abi,
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ierc20Abi}__ and `functionName` set to `"approve"`
+ */
+export const useSimulateIerc20Approve = /*#__PURE__*/ createUseSimulateContract(
+  { abi: ierc20Abi, functionName: 'approve' },
+)
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ierc20Abi}__ and `functionName` set to `"transfer"`
+ */
+export const useSimulateIerc20Transfer =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ierc20Abi,
+    functionName: 'transfer',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ierc20Abi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useSimulateIerc20TransferFrom =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ierc20Abi,
+    functionName: 'transferFrom',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ierc20Abi}__
+ */
+export const useWatchIerc20Event = /*#__PURE__*/ createUseWatchContractEvent({
+  abi: ierc20Abi,
+})
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ierc20Abi}__ and `eventName` set to `"Approval"`
+ */
+export const useWatchIerc20ApprovalEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: ierc20Abi,
+    eventName: 'Approval',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ierc20Abi}__ and `eventName` set to `"Transfer"`
+ */
+export const useWatchIerc20TransferEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: ierc20Abi,
+    eventName: 'Transfer',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ierc20MetadataAbi}__
+ */
+export const useReadIerc20Metadata = /*#__PURE__*/ createUseReadContract({
+  abi: ierc20MetadataAbi,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ierc20MetadataAbi}__ and `functionName` set to `"allowance"`
+ */
+export const useReadIerc20MetadataAllowance =
+  /*#__PURE__*/ createUseReadContract({
+    abi: ierc20MetadataAbi,
+    functionName: 'allowance',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ierc20MetadataAbi}__ and `functionName` set to `"balanceOf"`
+ */
+export const useReadIerc20MetadataBalanceOf =
+  /*#__PURE__*/ createUseReadContract({
+    abi: ierc20MetadataAbi,
+    functionName: 'balanceOf',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ierc20MetadataAbi}__ and `functionName` set to `"decimals"`
+ */
+export const useReadIerc20MetadataDecimals =
+  /*#__PURE__*/ createUseReadContract({
+    abi: ierc20MetadataAbi,
+    functionName: 'decimals',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ierc20MetadataAbi}__ and `functionName` set to `"name"`
+ */
+export const useReadIerc20MetadataName = /*#__PURE__*/ createUseReadContract({
+  abi: ierc20MetadataAbi,
+  functionName: 'name',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ierc20MetadataAbi}__ and `functionName` set to `"symbol"`
+ */
+export const useReadIerc20MetadataSymbol = /*#__PURE__*/ createUseReadContract({
+  abi: ierc20MetadataAbi,
+  functionName: 'symbol',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ierc20MetadataAbi}__ and `functionName` set to `"totalSupply"`
+ */
+export const useReadIerc20MetadataTotalSupply =
+  /*#__PURE__*/ createUseReadContract({
+    abi: ierc20MetadataAbi,
+    functionName: 'totalSupply',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ierc20MetadataAbi}__
+ */
+export const useWriteIerc20Metadata = /*#__PURE__*/ createUseWriteContract({
+  abi: ierc20MetadataAbi,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ierc20MetadataAbi}__ and `functionName` set to `"approve"`
+ */
+export const useWriteIerc20MetadataApprove =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: ierc20MetadataAbi,
+    functionName: 'approve',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ierc20MetadataAbi}__ and `functionName` set to `"transfer"`
+ */
+export const useWriteIerc20MetadataTransfer =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: ierc20MetadataAbi,
+    functionName: 'transfer',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ierc20MetadataAbi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useWriteIerc20MetadataTransferFrom =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: ierc20MetadataAbi,
+    functionName: 'transferFrom',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ierc20MetadataAbi}__
+ */
+export const useSimulateIerc20Metadata =
+  /*#__PURE__*/ createUseSimulateContract({ abi: ierc20MetadataAbi })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ierc20MetadataAbi}__ and `functionName` set to `"approve"`
+ */
+export const useSimulateIerc20MetadataApprove =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ierc20MetadataAbi,
+    functionName: 'approve',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ierc20MetadataAbi}__ and `functionName` set to `"transfer"`
+ */
+export const useSimulateIerc20MetadataTransfer =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ierc20MetadataAbi,
+    functionName: 'transfer',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ierc20MetadataAbi}__ and `functionName` set to `"transferFrom"`
+ */
+export const useSimulateIerc20MetadataTransferFrom =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ierc20MetadataAbi,
+    functionName: 'transferFrom',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ierc20MetadataAbi}__
+ */
+export const useWatchIerc20MetadataEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({ abi: ierc20MetadataAbi })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ierc20MetadataAbi}__ and `eventName` set to `"Approval"`
+ */
+export const useWatchIerc20MetadataApprovalEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: ierc20MetadataAbi,
+    eventName: 'Approval',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ierc20MetadataAbi}__ and `eventName` set to `"Transfer"`
+ */
+export const useWatchIerc20MetadataTransferEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: ierc20MetadataAbi,
+    eventName: 'Transfer',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__
- *
- *
  */
 export const useReadJointMoney = /*#__PURE__*/ createUseReadContract({
   abi: jointMoneyAbi,
-  address: jointMoneyAddress,
 })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"getGroup"`
- *
- *
  */
 export const useReadJointMoneyGetGroup = /*#__PURE__*/ createUseReadContract({
   abi: jointMoneyAbi,
-  address: jointMoneyAddress,
   functionName: 'getGroup',
 })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"getGroupBalance"`
- *
- *
  */
 export const useReadJointMoneyGetGroupBalance =
   /*#__PURE__*/ createUseReadContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'getGroupBalance',
   })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"getMyGroupIds"`
- *
- *
  */
 export const useReadJointMoneyGetMyGroupIds =
   /*#__PURE__*/ createUseReadContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'getMyGroupIds',
   })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"getMyGroups"`
- *
- *
  */
 export const useReadJointMoneyGetMyGroups = /*#__PURE__*/ createUseReadContract(
-  {
-    abi: jointMoneyAbi,
-    address: jointMoneyAddress,
-    functionName: 'getMyGroups',
-  },
+  { abi: jointMoneyAbi, functionName: 'getMyGroups' },
 )
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"getMyInvites"`
- *
- *
  */
 export const useReadJointMoneyGetMyInvites =
   /*#__PURE__*/ createUseReadContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'getMyInvites',
   })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"groups"`
- *
- *
  */
 export const useReadJointMoneyGroups = /*#__PURE__*/ createUseReadContract({
   abi: jointMoneyAbi,
-  address: jointMoneyAddress,
   functionName: 'groups',
 })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"memberDailyAllowanceMap"`
- *
- *
  */
 export const useReadJointMoneyMemberDailyAllowanceMap =
   /*#__PURE__*/ createUseReadContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'memberDailyAllowanceMap',
   })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"memberDailySpentMap"`
- *
- *
  */
 export const useReadJointMoneyMemberDailySpentMap =
   /*#__PURE__*/ createUseReadContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'memberDailySpentMap',
   })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"memberLastSpentAtMap"`
- *
- *
  */
 export const useReadJointMoneyMemberLastSpentAtMap =
   /*#__PURE__*/ createUseReadContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'memberLastSpentAtMap',
   })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"userGroupInvites"`
- *
- *
  */
 export const useReadJointMoneyUserGroupInvites =
   /*#__PURE__*/ createUseReadContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'userGroupInvites',
   })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"userGroups"`
- *
- *
  */
 export const useReadJointMoneyUserGroups = /*#__PURE__*/ createUseReadContract({
   abi: jointMoneyAbi,
-  address: jointMoneyAddress,
   functionName: 'userGroups',
 })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyAbi}__
- *
- *
  */
 export const useWriteJointMoney = /*#__PURE__*/ createUseWriteContract({
   abi: jointMoneyAbi,
-  address: jointMoneyAddress,
 })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"acceptGroupInvitation"`
- *
- *
  */
 export const useWriteJointMoneyAcceptGroupInvitation =
   /*#__PURE__*/ createUseWriteContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'acceptGroupInvitation',
   })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"cancelInvitation"`
- *
- *
  */
 export const useWriteJointMoneyCancelInvitation =
   /*#__PURE__*/ createUseWriteContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'cancelInvitation',
   })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"createGroup"`
- *
- *
  */
 export const useWriteJointMoneyCreateGroup =
   /*#__PURE__*/ createUseWriteContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'createGroup',
   })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"deleteGroup"`
- *
- *
  */
 export const useWriteJointMoneyDeleteGroup =
   /*#__PURE__*/ createUseWriteContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'deleteGroup',
   })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"deposit"`
- *
- *
  */
 export const useWriteJointMoneyDeposit = /*#__PURE__*/ createUseWriteContract({
   abi: jointMoneyAbi,
-  address: jointMoneyAddress,
   functionName: 'deposit',
 })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"inviteMembers"`
- *
- *
  */
 export const useWriteJointMoneyInviteMembers =
   /*#__PURE__*/ createUseWriteContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'inviteMembers',
   })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"removeMember"`
- *
- *
  */
 export const useWriteJointMoneyRemoveMember =
   /*#__PURE__*/ createUseWriteContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'removeMember',
   })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"setAllowance"`
- *
- *
  */
 export const useWriteJointMoneySetAllowance =
   /*#__PURE__*/ createUseWriteContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'setAllowance',
   })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"withdraw"`
- *
- *
  */
 export const useWriteJointMoneyWithdraw = /*#__PURE__*/ createUseWriteContract({
   abi: jointMoneyAbi,
-  address: jointMoneyAddress,
   functionName: 'withdraw',
 })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyAbi}__
- *
- *
  */
 export const useSimulateJointMoney = /*#__PURE__*/ createUseSimulateContract({
   abi: jointMoneyAbi,
-  address: jointMoneyAddress,
 })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"acceptGroupInvitation"`
- *
- *
  */
 export const useSimulateJointMoneyAcceptGroupInvitation =
   /*#__PURE__*/ createUseSimulateContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'acceptGroupInvitation',
   })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"cancelInvitation"`
- *
- *
  */
 export const useSimulateJointMoneyCancelInvitation =
   /*#__PURE__*/ createUseSimulateContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'cancelInvitation',
   })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"createGroup"`
- *
- *
  */
 export const useSimulateJointMoneyCreateGroup =
   /*#__PURE__*/ createUseSimulateContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'createGroup',
   })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"deleteGroup"`
- *
- *
  */
 export const useSimulateJointMoneyDeleteGroup =
   /*#__PURE__*/ createUseSimulateContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'deleteGroup',
   })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"deposit"`
- *
- *
  */
 export const useSimulateJointMoneyDeposit =
   /*#__PURE__*/ createUseSimulateContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'deposit',
   })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"inviteMembers"`
- *
- *
  */
 export const useSimulateJointMoneyInviteMembers =
   /*#__PURE__*/ createUseSimulateContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'inviteMembers',
   })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"removeMember"`
- *
- *
  */
 export const useSimulateJointMoneyRemoveMember =
   /*#__PURE__*/ createUseSimulateContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'removeMember',
   })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"setAllowance"`
- *
- *
  */
 export const useSimulateJointMoneySetAllowance =
   /*#__PURE__*/ createUseSimulateContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'setAllowance',
   })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyAbi}__ and `functionName` set to `"withdraw"`
- *
- *
  */
 export const useSimulateJointMoneyWithdraw =
   /*#__PURE__*/ createUseSimulateContract({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     functionName: 'withdraw',
   })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyAbi}__
- *
- *
  */
 export const useWatchJointMoneyEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: jointMoneyAbi,
-    address: jointMoneyAddress,
-  })
+  /*#__PURE__*/ createUseWatchContractEvent({ abi: jointMoneyAbi })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyAbi}__ and `eventName` set to `"AllowanceSet"`
- *
- *
  */
 export const useWatchJointMoneyAllowanceSetEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     eventName: 'AllowanceSet',
   })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyAbi}__ and `eventName` set to `"Deposit"`
- *
- *
  */
 export const useWatchJointMoneyDepositEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     eventName: 'Deposit',
   })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyAbi}__ and `eventName` set to `"GroupCreated"`
- *
- *
  */
 export const useWatchJointMoneyGroupCreatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     eventName: 'GroupCreated',
   })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyAbi}__ and `eventName` set to `"GroupDeleted"`
- *
- *
  */
 export const useWatchJointMoneyGroupDeletedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     eventName: 'GroupDeleted',
   })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyAbi}__ and `eventName` set to `"InvitationCancelled"`
- *
- *
  */
 export const useWatchJointMoneyInvitationCancelledEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     eventName: 'InvitationCancelled',
   })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyAbi}__ and `eventName` set to `"MemberAccepted"`
- *
- *
  */
 export const useWatchJointMoneyMemberAcceptedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     eventName: 'MemberAccepted',
   })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyAbi}__ and `eventName` set to `"MemberRemoved"`
- *
- *
  */
 export const useWatchJointMoneyMemberRemovedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     eventName: 'MemberRemoved',
   })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyAbi}__ and `eventName` set to `"MembersInvited"`
- *
- *
  */
 export const useWatchJointMoneyMembersInvitedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     eventName: 'MembersInvited',
   })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyAbi}__ and `eventName` set to `"Withdraw"`
- *
- *
  */
 export const useWatchJointMoneyWithdrawEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: jointMoneyAbi,
-    address: jointMoneyAddress,
     eventName: 'Withdraw',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__
+ *
+ *
+ */
+export const useReadJointMoneyErc20 = /*#__PURE__*/ createUseReadContract({
+  abi: jointMoneyErc20Abi,
+  address: jointMoneyErc20Address,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"getBalance"`
+ *
+ *
+ */
+export const useReadJointMoneyErc20GetBalance =
+  /*#__PURE__*/ createUseReadContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'getBalance',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"groupCount"`
+ *
+ *
+ */
+export const useReadJointMoneyErc20GroupCount =
+  /*#__PURE__*/ createUseReadContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'groupCount',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"groupSettings"`
+ *
+ *
+ */
+export const useReadJointMoneyErc20GroupSettings =
+  /*#__PURE__*/ createUseReadContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'groupSettings',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"groupTokenAmount"`
+ *
+ *
+ */
+export const useReadJointMoneyErc20GroupTokenAmount =
+  /*#__PURE__*/ createUseReadContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'groupTokenAmount',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"groupUserSettings"`
+ *
+ *
+ */
+export const useReadJointMoneyErc20GroupUserSettings =
+  /*#__PURE__*/ createUseReadContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'groupUserSettings',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__
+ *
+ *
+ */
+export const useWriteJointMoneyErc20 = /*#__PURE__*/ createUseWriteContract({
+  abi: jointMoneyErc20Abi,
+  address: jointMoneyErc20Address,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"accept"`
+ *
+ *
+ */
+export const useWriteJointMoneyErc20Accept =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'accept',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"cancelInvitatioin"`
+ *
+ *
+ */
+export const useWriteJointMoneyErc20CancelInvitatioin =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'cancelInvitatioin',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"createGroup"`
+ *
+ *
+ */
+export const useWriteJointMoneyErc20CreateGroup =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'createGroup',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"deposit"`
+ *
+ *
+ */
+export const useWriteJointMoneyErc20Deposit =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'deposit',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"invite"`
+ *
+ *
+ */
+export const useWriteJointMoneyErc20Invite =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'invite',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"leaveGroup"`
+ *
+ *
+ */
+export const useWriteJointMoneyErc20LeaveGroup =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'leaveGroup',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"removeMember"`
+ *
+ *
+ */
+export const useWriteJointMoneyErc20RemoveMember =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'removeMember',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"setAllowance"`
+ *
+ *
+ */
+export const useWriteJointMoneyErc20SetAllowance =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'setAllowance',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"withdraw"`
+ *
+ *
+ */
+export const useWriteJointMoneyErc20Withdraw =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'withdraw',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__
+ *
+ *
+ */
+export const useSimulateJointMoneyErc20 =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"accept"`
+ *
+ *
+ */
+export const useSimulateJointMoneyErc20Accept =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'accept',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"cancelInvitatioin"`
+ *
+ *
+ */
+export const useSimulateJointMoneyErc20CancelInvitatioin =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'cancelInvitatioin',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"createGroup"`
+ *
+ *
+ */
+export const useSimulateJointMoneyErc20CreateGroup =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'createGroup',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"deposit"`
+ *
+ *
+ */
+export const useSimulateJointMoneyErc20Deposit =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'deposit',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"invite"`
+ *
+ *
+ */
+export const useSimulateJointMoneyErc20Invite =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'invite',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"leaveGroup"`
+ *
+ *
+ */
+export const useSimulateJointMoneyErc20LeaveGroup =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'leaveGroup',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"removeMember"`
+ *
+ *
+ */
+export const useSimulateJointMoneyErc20RemoveMember =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'removeMember',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"setAllowance"`
+ *
+ *
+ */
+export const useSimulateJointMoneyErc20SetAllowance =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'setAllowance',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"withdraw"`
+ *
+ *
+ */
+export const useSimulateJointMoneyErc20Withdraw =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    functionName: 'withdraw',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__
+ *
+ *
+ */
+export const useWatchJointMoneyErc20Event =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupAccepted"`
+ *
+ *
+ */
+export const useWatchJointMoneyErc20GroupAcceptedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    eventName: 'GroupAccepted',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupAllowanceSet"`
+ *
+ *
+ */
+export const useWatchJointMoneyErc20GroupAllowanceSetEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    eventName: 'GroupAllowanceSet',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupCreated"`
+ *
+ *
+ */
+export const useWatchJointMoneyErc20GroupCreatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    eventName: 'GroupCreated',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupDeposited"`
+ *
+ *
+ */
+export const useWatchJointMoneyErc20GroupDepositedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    eventName: 'GroupDeposited',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupInvitationCancelled"`
+ *
+ *
+ */
+export const useWatchJointMoneyErc20GroupInvitationCancelledEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    eventName: 'GroupInvitationCancelled',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupInvited"`
+ *
+ *
+ */
+export const useWatchJointMoneyErc20GroupInvitedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    eventName: 'GroupInvited',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupLeft"`
+ *
+ *
+ */
+export const useWatchJointMoneyErc20GroupLeftEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    eventName: 'GroupLeft',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupWithdrawn"`
+ *
+ *
+ */
+export const useWatchJointMoneyErc20GroupWithdrawnEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: jointMoneyErc20Abi,
+    address: jointMoneyErc20Address,
+    eventName: 'GroupWithdrawn',
   })

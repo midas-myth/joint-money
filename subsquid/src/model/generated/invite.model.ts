@@ -1,6 +1,7 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, StringColumn as StringColumn_} from "@subsquid/typeorm-store"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, ManyToOne as ManyToOne_, StringColumn as StringColumn_} from "@subsquid/typeorm-store"
+import {Group} from "./group.model"
 
-@Index_(["invitee", "groupId"], {unique: true})
+@Index_(["invitee", "group"], {unique: true})
 @Entity_()
 export class Invite {
     constructor(props?: Partial<Invite>) {
@@ -10,10 +11,10 @@ export class Invite {
     @PrimaryColumn_()
     id!: string
 
+    @Index_()
+    @ManyToOne_(() => Group, {nullable: true})
+    group!: Group
+
     @StringColumn_({nullable: false})
     invitee!: string
-
-    @Index_()
-    @StringColumn_({nullable: false})
-    groupId!: string
 }

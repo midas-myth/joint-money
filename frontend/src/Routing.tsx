@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import FullscreenLoader from "./components/FullScreenLoader";
+import FullscreenLoader from "./components/FullscreenLoader";
 
 const LazyMainPage = lazy(() => import("./pages/Main"));
 const LazyGroupCreatePage = lazy(() => import("./pages/GroupCreate"));

@@ -1,0 +1,23 @@
+type Group @entity {
+  id: ID!
+  admin: String!
+  members: [Member!]!
+  tokenAmounts: [TokenAmount!]!
+}
+
+type Member {
+  address: ID!
+  dailyAllowance: BigInt!
+  dailySpent: BigInt!
+  lastSpentAt: BigInt!
+}
+
+type TokenAmount {
+  tokenAddress: ID!
+  amount: BigInt!
+}
+
+type Invite @entity @index(fields: ["invitee", "groupId"], unique: true) {
+  invitee: String! @index
+  groupId: String! @index
+}

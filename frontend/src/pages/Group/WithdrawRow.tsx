@@ -1,13 +1,16 @@
 import { useMemo, useState } from "react";
-import { Address, isAddress } from "viem";
-import { useAccount } from "wagmi";
+import { isAddress } from "viem";
+import { useAccount, useChainId } from "wagmi";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-import { useWriteJointMoneyWithdraw } from "../../generated";
+import TokenSelector from "../../components/TokenSelector";
+import { useWriteJointMoneyErc20Withdraw } from "../../generated";
 
-export default function WithdrawRow(props: { groupId: bigint }) {
+export default function WithdrawRow({ groupId }: { groupId: string }) {
+  const chainId = useChainId();
   const { address } = useAccount();
+  const [tokenAddress, setTokenAddress] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [to, setTo] = useState<string>("");
 
@@ -19,7 +22,7 @@ export default function WithdrawRow(props: { groupId: bigint }) {
     }
   }, [amount]);
 
-  const { writeContractAsync } = useWriteJointMoneyWithdraw();
+  const { writeContractAsync } = useWriteJointMoneyErc20Withdraw();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,8 +36,13 @@ export default function WithdrawRow(props: { groupId: bigint }) {
       return;
     }
 
+    if (!isAddress(tokenAddress)) {
+      alert("Invalid token address");
+      return;
+    }
+
     await writeContractAsync({
-      args: [props.groupId, amountBigInt, to as Address],
+      args: [BigInt(groupId), tokenAddress, amountBigInt, to],
       account: address,
     });
     setAmount("");
@@ -49,12 +57,14 @@ export default function WithdrawRow(props: { groupId: bigint }) {
         onChange={(e) => setAmount(e.target.value)}
         placeholder="Amount"
       />
+      <TokenSelector value={tokenAddress} onChange={setTokenAddress} />
       <Input
         type="text"
         value={to}
         onChange={(e) => setTo(e.target.value)}
         placeholder="Address"
       />
+
       <Button type="submit">Withdraw</Button>
     </form>
   );

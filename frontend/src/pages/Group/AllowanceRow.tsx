@@ -9,7 +9,7 @@ import {
   useWriteJointMoneySetAllowance,
 } from "../../generated";
 
-export default function AllowanceRow(props: { groupId: bigint }) {
+export default function AllowanceRow(props: { groupId: string }) {
   const { address } = useAccount();
   const [amount, setAmount] = useState<string>("");
   const [to, setTo] = useState<string>("");
@@ -23,7 +23,7 @@ export default function AllowanceRow(props: { groupId: bigint }) {
   }, [amount]);
 
   const { data } = useSimulateJointMoneySetAllowance({
-    args: [props.groupId, to as Address, amountBigInt!],
+    args: [BigInt(props.groupId), to as Address, amountBigInt!],
     query: {
       enabled: amountBigInt !== undefined && amountBigInt > 0n && isAddress(to),
     },

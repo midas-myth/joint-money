@@ -9,11 +9,11 @@ import {
   useWriteJointMoneyInviteMembers,
 } from "../../generated";
 
-export default function InviteRow(props: { groupId: bigint }) {
+export default function InviteRow({ groupId }: { groupId: string }) {
   const { address } = useAccount();
   const [invite, setInvite] = useState("");
   const { data } = useSimulateJointMoneyInviteMembers({
-    args: [props.groupId, [invite as Address]],
+    args: [BigInt(groupId), [invite as Address]],
     query: { enabled: isAddress(invite) },
     account: address,
   });

@@ -5,7 +5,7 @@ import AddressTag from "../../components/AddressTag";
 import Button from "../../components/Button";
 import { useWriteJointMoneyCancelInvitation } from "../../generated";
 
-export default function Invitee(props: { groupId: bigint; address: Address }) {
+export default function Invitee(props: { groupId: string; address: Address }) {
   const { address } = useAccount();
   const { writeContractAsync } = useWriteJointMoneyCancelInvitation();
 

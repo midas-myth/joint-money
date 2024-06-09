@@ -7,7 +7,10 @@ const config: CodegenConfig = {
   generates: {
     "src/gql/": {
       preset: "client",
-      plugins: [],
+      // plugins: ["named-operations-object"],
+      config: {
+        documentMode: "string",
+      },
     },
   },
 };

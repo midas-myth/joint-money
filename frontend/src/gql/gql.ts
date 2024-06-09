@@ -1,6 +1,7 @@
 /* eslint-disable */
 import * as types from './graphql';
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+
+
 
 /**
  * Map of all GraphQL operations in the project.
@@ -13,30 +14,25 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  query GetGroup($id: String!) {\n    groupById(id: $id) {\n      id\n      admin\n      members {\n        address\n        dailyAllowance\n        dailySpent\n        lastSpentAt\n      }\n      tokenAmounts {\n        tokenAddress\n        amount\n      }\n    }\n  }\n": types.GetGroupDocument,
+    "\n  subscription GetGroup($id: String!) {\n    groupById(id: $id) {\n      id\n      admin\n      members {\n        address\n        dailyAllowance\n        dailySpent\n        lastSpentAt\n      }\n      tokenAmounts {\n        tokenAddress\n        amount\n      }\n      invites {\n        invitee\n      }\n    }\n  }\n": types.GetGroupDocument,
+    "\n  subscription GetMyInvites($account: String!) {\n    invites(where: { invitee_eq: $account }) {\n      group {\n        id\n      }\n    }\n  }\n": types.GetMyInvitesDocument,
+    "\n  subscription GetMyGroups($address: String!) {\n    memberships(where: { address_eq: $address }) {\n      group {\n        admin\n        id\n        members {\n          address\n          dailyAllowance\n          dailySpent\n          lastSpentAt\n        }\n        invites {\n          invitee\n        }\n      }\n    }\n  }\n": types.GetMyGroupsDocument,
 };
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- *
- *
- * @example
- * ```ts
- * const query = graphql(`query GetUser($id: ID!) { user(id: $id) { name } }`);
- * ```
- *
- * The query argument is unknown!
- * Please regenerate the types.
  */
-export function graphql(source: string): unknown;
-
+export function graphql(source: "\n  subscription GetGroup($id: String!) {\n    groupById(id: $id) {\n      id\n      admin\n      members {\n        address\n        dailyAllowance\n        dailySpent\n        lastSpentAt\n      }\n      tokenAmounts {\n        tokenAddress\n        amount\n      }\n      invites {\n        invitee\n      }\n    }\n  }\n"): typeof import('./graphql').GetGroupDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetGroup($id: String!) {\n    groupById(id: $id) {\n      id\n      admin\n      members {\n        address\n        dailyAllowance\n        dailySpent\n        lastSpentAt\n      }\n      tokenAmounts {\n        tokenAddress\n        amount\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetGroup($id: String!) {\n    groupById(id: $id) {\n      id\n      admin\n      members {\n        address\n        dailyAllowance\n        dailySpent\n        lastSpentAt\n      }\n      tokenAmounts {\n        tokenAddress\n        amount\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  subscription GetMyInvites($account: String!) {\n    invites(where: { invitee_eq: $account }) {\n      group {\n        id\n      }\n    }\n  }\n"): typeof import('./graphql').GetMyInvitesDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  subscription GetMyGroups($address: String!) {\n    memberships(where: { address_eq: $address }) {\n      group {\n        admin\n        id\n        members {\n          address\n          dailyAllowance\n          dailySpent\n          lastSpentAt\n        }\n        invites {\n          invitee\n        }\n      }\n    }\n  }\n"): typeof import('./graphql').GetMyGroupsDocument;
+
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
 }
-
-export type DocumentType<TDocumentNode extends DocumentNode<any, any>> = TDocumentNode extends DocumentNode<  infer TType,  any>  ? TType  : never;

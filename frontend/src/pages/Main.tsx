@@ -1,10 +1,10 @@
-import { isAddress } from "viem";
 import { useAccount } from "wagmi";
 
 import AddressTag from "../components/AddressTag";
 import InternalLink from "../components/InternalLink";
 import Page from "../components/Page";
-import useGroup from "../hooks/useGroup";
+import useInvites from "../hooks/useInvites";
+import useMyGroups from "../hooks/useMyGroups";
 
 // import { useReadJointMoneyGetMyGroups } from "../generated";
 // import useInvites from "../hooks/useInvites";
@@ -12,15 +12,9 @@ import useGroup from "../hooks/useGroup";
 export default function Main() {
   const { address } = useAccount();
 
-  // const { data } = useReadJointMoneyGetMyGroups({
-  //   query: { enabled: address && isAddress(address) },
-  //   account: address,
-  // });
+  const myInvitesQuery = useInvites();
 
-  // const { data: invites } = useInvites();
-  const { data } = useGroup("1");
-
-  console.log(data);
+  const myGroupsQuery = useMyGroups();
 
   return (
     <Page>
@@ -29,35 +23,35 @@ export default function Main() {
           Address <AddressTag address={address} />
         </div>
       )}
-      {/* {invites && invites.length !== 0 && (
+      {myInvitesQuery.data && myInvitesQuery.data.invites.length !== 0 && (
         <div>
-          You have {invites.length} invites.{" "}
+          You have {myInvitesQuery.data.invites.length} invites.{" "}
           <InternalLink to="/invites">View invites</InternalLink>.
         </div>
-      )} */}
+      )}
       <div>
         <div>Your groups</div>
-        {/* {!data && <div>No data</div>}
-        {data && data.length === 0 && (
+        {!myGroupsQuery.data && <div>No data</div>}
+        {myGroupsQuery.data && myGroupsQuery.data.memberships.length === 0 && (
           <>
             <div>No groups</div>
           </>
         )}
-        {data && data.length !== 0 && (
+        {myGroupsQuery.data && myGroupsQuery.data.memberships.length !== 0 && (
           <div className="flex flex-col gap-2">
-            {data.map((group) => (
+            {myGroupsQuery.data.memberships.map((membership) => (
               <div
                 className="p-2 border border-gray-300 rounded "
-                key={group.id.toString(36)}
+                key={membership.group.id}
               >
-                <div>Title: {group.id.toString(36)}</div>
-                <InternalLink to={`/groups/${group.id.toString(36)}`}>
+                <div>Title: {membership.group.id}</div>
+                <InternalLink to={`/groups/${membership.group.id}`}>
                   Open
                 </InternalLink>
               </div>
             ))}
           </div>
-        )} */}
+        )}
         <InternalLink to="/groups/create">Create a group</InternalLink>
       </div>
     </Page>

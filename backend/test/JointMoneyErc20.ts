@@ -1,19 +1,19 @@
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 import { expect } from "chai";
 import hre from "hardhat";
-import { ERC20Mock, JointMoneyErc20 } from "../typechain-types";
+import { MockErc20, JointMoneyErc20 } from "../typechain-types";
 
 describe("JointMoney", () => {
   let owner: HardhatEthersSigner;
   let addr1: HardhatEthersSigner;
 
-  let token: ERC20Mock;
+  let token: MockErc20;
   let jointMoney: JointMoneyErc20;
 
   before(async function () {
     [owner, addr1] = await hre.ethers.getSigners();
 
-    token = await hre.ethers.deployContract("ERC20Mock", [
+    token = await hre.ethers.deployContract("MockErc20", [
       "MockToken",
       "MT",
       owner.address,
@@ -34,7 +34,10 @@ describe("JointMoney", () => {
   });
 
   it("user can deposit into a group", async () => {
-    await token.approve(await jointMoney.getAddress(), 100);
+    console.log("owner.address", owner.address);
+    console.log("token.address", await token.getAddress());
+    console.log("jointMoney.address", await jointMoney.getAddress());
+
     await expect(jointMoney.deposit(1, await token.getAddress(), 100))
       .to.emit(jointMoney, "GroupDeposited")
       .withArgs(1, owner.address, await token.getAddress(), 100);

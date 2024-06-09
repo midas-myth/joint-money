@@ -7,7 +7,7 @@ import { useWriteJointMoneyRemoveMember } from "../../generated";
 
 export default function Member(props: {
   address: Address;
-  groupId: bigint;
+  groupId: string;
   adminAddress: Address;
 }) {
   const { address } = useAccount();

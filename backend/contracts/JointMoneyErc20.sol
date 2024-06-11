@@ -63,7 +63,11 @@ contract JointMoneyErc20 {
         );
 
         require(
-            IERC20(tokenAddress).transfer(address(this), amount),
+            IERC20(tokenAddress).transferFrom(
+                msg.sender,
+                address(this),
+                amount
+            ),
             "Transfer failed"
         );
 

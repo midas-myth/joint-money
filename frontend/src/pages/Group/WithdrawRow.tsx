@@ -6,21 +6,26 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import TokenSelector from "../../components/TokenSelector";
 import { useWriteJointMoneyErc20Withdraw } from "../../generated";
+import useTokenByAddress from "../../hooks/useTokenByAddress";
 
 export default function WithdrawRow({ groupId }: { groupId: string }) {
-  const chainId = useChainId();
   const { address } = useAccount();
   const [tokenAddress, setTokenAddress] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [to, setTo] = useState<string>("");
+  const token = useTokenByAddress(tokenAddress);
 
   const amountBigInt = useMemo(() => {
+    if (!token) {
+      return undefined;
+    }
+
     try {
-      return BigInt(amount);
+      return BigInt(amount) * 10n ** BigInt(token.decimals);
     } catch {
       return undefined;
     }
-  }, [amount]);
+  }, [amount, token]);
 
   const { writeContractAsync } = useWriteJointMoneyErc20Withdraw();
 

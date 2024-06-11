@@ -26,6 +26,7 @@
   "devDependencies": {
     "@subsquid/evm-typegen": "^4.1.4",
     "@subsquid/typeorm-codegen": "^2.0.1",
+    "tsx": "^4.15.2",
     "typescript": "^5.4.5"
   }
 }

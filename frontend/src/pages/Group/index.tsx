@@ -8,6 +8,7 @@ import Heading from "../../components/Heading";
 import Page from "../../components/Page";
 import displayMoney from "../../displayMoney";
 import useGroup from "../../hooks/useGroup";
+import useTokensByAddress from "../../hooks/useTokensByAddress";
 import tokens from "../../tokens";
 import AllowanceRow from "./AllowanceRow";
 // import DeleteRow from "./DeleteRow";
@@ -39,6 +40,8 @@ export default function Group() {
         ),
     };
   }, [address, group]);
+
+  const chainTokens = useTokensByAddress();
 
   if (groupQuery.isLoading) {
     return (
@@ -108,15 +111,18 @@ export default function Group() {
             Balances:
             <div>
               {group.tokenAmounts.map((tokenAmount) => (
-                <div key={tokenAmount.tokenAddress}>
-                  <div>{tokens[chainId][tokenAmount.tokenAddress].name}</div>
+                <div
+                  key={tokenAmount.tokenAddress}
+                  className="flex items-center gap-2"
+                >
+                  <div>{chainTokens[tokenAmount.tokenAddress].name}</div>
                   <div>
                     {displayMoney(
                       tokenAmount.amount,
-                      tokens[chainId][tokenAmount.tokenAddress].decimals,
+                      chainTokens[tokenAmount.tokenAddress].decimals,
                       false,
                     )}{" "}
-                    {tokens[chainId][tokenAmount.tokenAddress].name}
+                    {chainTokens[tokenAmount.tokenAddress].symbol}
                   </div>
                 </div>
               ))}

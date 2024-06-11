@@ -1,42 +1,34 @@
 import { useMemo, useState } from "react";
-import { Address, isAddress } from "viem";
+import { Address, isAddress, maxUint256 } from "viem";
 import { useAccount, useChainId } from "wagmi";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import TokenSelector from "../../components/TokenSelector";
 import {
-  ierc20ErrorsAbi,
   jointMoneyErc20Address,
+  useReadIerc20Allowance,
   useSimulateJointMoneyErc20Deposit,
-  useWatchIerc20MetadataApprovalEvent,
   useWriteIerc20Approve,
   useWriteJointMoneyErc20Deposit,
 } from "../../generated";
+import useTokenByAddress from "../../hooks/useTokenByAddress";
 
 function useErc20TokenApproval(tokenAddress: Address) {
   const chainId = useChainId();
   const { address } = useAccount();
 
-  // const { writeContractAsync } = useWriteIerc20Approve();
-
-  const [approved, setApproved] = useState<boolean | null>(null);
-
-  useWatchIerc20MetadataApprovalEvent({
-    args: {
-      owner: address,
-      spender: jointMoneyErc20Address[chainId],
-    },
-    enabled: address && isAddress(address) && isAddress(tokenAddress),
+  const allowanceQuery = useReadIerc20Allowance({
     address: tokenAddress,
-    fromBlock: 0n,
-    onLogs: (log) => {
-      // decodeEventLog(log);
-      console.log("Approved", log);
+    account: address,
+    args: [address!, jointMoneyErc20Address[chainId]],
+    query: {
+      enabled: isAddress(tokenAddress),
+      refetchInterval: 1000,
     },
   });
 
-  return { approved };
+  return allowanceQuery.data;
 }
 
 export default function DepositRow({ groupId }: { groupId: string }) {
@@ -45,26 +37,24 @@ export default function DepositRow({ groupId }: { groupId: string }) {
   const [amount, setAmount] = useState<string>("");
   const [tokenAddress, setTokenAddress] = useState<string>("");
 
-  const { approved } = useErc20TokenApproval(tokenAddress as Address);
+  const token = useTokenByAddress(tokenAddress);
 
-  // const shouldApprove = useWatchIerc20MetadataApprovalEvent({
-  //   args: {
-  //     owner: address,
-  //     spender: jointMoneyErc20Address[chainId],
-  //   },
-  //   fromBlock: 0n,
-  //   onLogs: () => {
-  //     console.log("Approved");
-  //   },
-  // });
+  const allowance = useErc20TokenApproval(tokenAddress as Address);
 
   const amountBigInt = useMemo(() => {
+    if (!token) {
+      return undefined;
+    }
+
     try {
-      return BigInt(amount);
+      return BigInt(amount) * 10n ** BigInt(token.decimals);
     } catch {
       return undefined;
     }
-  }, [amount]);
+  }, [amount, token]);
+
+  const needApproval =
+    !allowance || (amountBigInt !== undefined && amountBigInt > allowance);
 
   const { data, error } = useSimulateJointMoneyErc20Deposit({
     args: [BigInt(groupId), tokenAddress as Address, amountBigInt!],
@@ -114,13 +104,16 @@ export default function DepositRow({ groupId }: { groupId: string }) {
     }
 
     await approve({
-      args: [jointMoneyErc20Address[chainId], amountBigInt!],
+      args: [jointMoneyErc20Address[chainId], maxUint256],
       address: tokenAddress as Address,
     });
   };
 
   return (
-    <form className="flex gap-1" onSubmit={handleSubmit}>
+    <form
+      className="flex gap-1"
+      onSubmit={needApproval ? handleApprove : handleSubmit}
+    >
       <Input
         type="number"
         value={amount}
@@ -128,7 +121,7 @@ export default function DepositRow({ groupId }: { groupId: string }) {
         placeholder="Amount"
       />
       <TokenSelector value={tokenAddress} onChange={setTokenAddress} />
-      <Button type="submit">Deposit</Button>
+      <Button type="submit">{needApproval ? "Approve" : "Deposit"}</Button>
     </form>
   );
 }

@@ -21,6 +21,9 @@ export default function TokenSelector(props: {
       args: [address],
     })),
     allowFailure: true,
+    query: {
+      refetchInterval: 1000,
+    },
   });
 
   return (

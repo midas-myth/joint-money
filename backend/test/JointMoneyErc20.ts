@@ -34,9 +34,7 @@ describe("JointMoney", () => {
   });
 
   it("user can deposit into a group", async () => {
-    console.log("owner.address", owner.address);
-    console.log("token.address", await token.getAddress());
-    console.log("jointMoney.address", await jointMoney.getAddress());
+    await token.approve(await jointMoney.getAddress(), 100);
 
     await expect(jointMoney.deposit(1, await token.getAddress(), 100))
       .to.emit(jointMoney, "GroupDeposited")

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { Address, isAddressEqual } from "viem";
-import { useAccount, useChainId } from "wagmi";
+import { useAccount } from "wagmi";
 
 import AddressTag from "../../components/AddressTag";
 import Heading from "../../components/Heading";
@@ -9,7 +9,6 @@ import Page from "../../components/Page";
 import displayMoney from "../../displayMoney";
 import useGroup from "../../hooks/useGroup";
 import useTokensByAddress from "../../hooks/useTokensByAddress";
-import tokens from "../../tokens";
 import AllowanceRow from "./AllowanceRow";
 // import DeleteRow from "./DeleteRow";
 import DepositRow from "./DepositRow";
@@ -19,7 +18,6 @@ import Member from "./Member";
 import WithdrawRow from "./WithdrawRow";
 
 export default function Group() {
-  const chainId = useChainId();
   const { address } = useAccount();
   const groupId = useParams<"id">().id;
 

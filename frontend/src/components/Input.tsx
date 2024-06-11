@@ -1,9 +1,20 @@
 const preventDefaultOnWheel = (node: HTMLInputElement) => {
   if (node !== null) {
+    const inputType = node.getAttribute("type");
+
+    if (inputType !== "number") {
+      return;
+    }
+
     node.addEventListener(
       "wheel",
       (e) => {
+        const isFocused = document.activeElement === node;
+        if (!isFocused) {
+          return;
+        }
         e.preventDefault();
+        scrollBy(e.deltaX, e.deltaY);
       },
       { passive: false },
     );

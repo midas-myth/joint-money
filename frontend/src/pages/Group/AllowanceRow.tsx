@@ -5,8 +5,8 @@ import { useAccount } from "wagmi";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import {
-  useSimulateJointMoneySetAllowance,
-  useWriteJointMoneySetAllowance,
+  useSimulateJointMoneyErc20SetAllowance,
+  useWriteJointMoneyErc20SetAllowance,
 } from "../../generated";
 
 export default function AllowanceRow(props: { groupId: string }) {
@@ -22,7 +22,7 @@ export default function AllowanceRow(props: { groupId: string }) {
     }
   }, [amount]);
 
-  const { data } = useSimulateJointMoneySetAllowance({
+  const { data } = useSimulateJointMoneyErc20SetAllowance({
     args: [BigInt(props.groupId), to as Address, amountBigInt!],
     query: {
       enabled: amountBigInt !== undefined && amountBigInt > 0n && isAddress(to),
@@ -30,7 +30,7 @@ export default function AllowanceRow(props: { groupId: string }) {
     account: address,
   });
 
-  const { writeContractAsync } = useWriteJointMoneySetAllowance();
+  const { writeContractAsync } = useWriteJointMoneyErc20SetAllowance();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

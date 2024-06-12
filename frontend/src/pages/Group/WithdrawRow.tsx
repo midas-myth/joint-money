@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { isAddress } from "viem";
-import { useAccount, useChainId } from "wagmi";
+import { useAccount } from "wagmi";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";

@@ -3,15 +3,15 @@ import { useAccount } from "wagmi";
 
 import AddressTag from "../../components/AddressTag";
 import Button from "../../components/Button";
-import { useWriteJointMoneyCancelInvitation } from "../../generated";
+import { useWriteJointMoneyErc20CancelInvitatioin } from "../../generated";
 
 export default function Invitee(props: { groupId: string; address: Address }) {
   const { address } = useAccount();
-  const { writeContractAsync } = useWriteJointMoneyCancelInvitation();
+  const { writeContractAsync } = useWriteJointMoneyErc20CancelInvitatioin();
 
   const handleCancel = async () => {
     await writeContractAsync({
-      args: [props.groupId, props.address],
+      args: [BigInt(props.groupId), props.address],
       account: address,
     });
   };

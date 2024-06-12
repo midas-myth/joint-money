@@ -3,7 +3,7 @@ import { useAccount } from "wagmi";
 
 import AddressTag from "../../components/AddressTag";
 import Button from "../../components/Button";
-import { useWriteJointMoneyRemoveMember } from "../../generated";
+import { useWriteJointMoneyErc20RemoveMember } from "../../generated";
 
 export default function Member(props: {
   address: Address;
@@ -11,11 +11,11 @@ export default function Member(props: {
   adminAddress: Address;
 }) {
   const { address } = useAccount();
-  const { writeContractAsync } = useWriteJointMoneyRemoveMember();
+  const { writeContractAsync } = useWriteJointMoneyErc20RemoveMember();
 
   const handleRemove = async () => {
     await writeContractAsync({
-      args: [props.groupId, props.address],
+      args: [BigInt(props.groupId), props.address],
       account: address,
     });
   };

@@ -1,0 +1,21 @@
+manifest_version: subsquid.io/v0.1
+name: joint-money # set name
+version: 1 # version, must be an integer
+description: |- # set description
+  My squid
+
+build:
+  node_version: 20
+  package_manager: npm
+
+deploy:
+  addons:
+    postgres:
+    rpc:
+      - ava-testnet:http
+  processor:
+    cmd: ["sqd", "process:prod"]
+    env:
+      JOINT_MONEY_CONTRACT_ADDRESS: "0xC2cE8B452150dF3184f7E2048322524682941e94"
+  api:
+    cmd: ["sqd", "serve:prod"]

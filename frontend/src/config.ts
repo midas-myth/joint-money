@@ -1,11 +1,15 @@
 import { createConfig, webSocket } from "wagmi";
-import { hardhat } from "wagmi/chains";
+import { avalancheFuji } from "wagmi/chains";
 import { injected, metaMask } from "wagmi/connectors";
 
 export const config = createConfig({
-  chains: [hardhat],
+  // chains: [hardhat],
+  // transports: {
+  //   [hardhat.id]: webSocket("ws://localhost:8545"),
+  // },
+  chains: [avalancheFuji],
   transports: {
-    [hardhat.id]: webSocket("ws://localhost:8545"),
+    [avalancheFuji.id]: webSocket("wss://api.avax-test.network/ext/bc/C/ws"),
   },
   connectors: [injected(), metaMask()],
 });

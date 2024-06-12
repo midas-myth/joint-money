@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "gen": "npx squid-typeorm-codegen && npx tsc",
     "mig:gen": "npx squid-typeorm-migration generate",

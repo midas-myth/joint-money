@@ -902,7 +902,7 @@ export const jointMoneyAbi = [
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const jointMoneyErc20Abi = [
   {
@@ -1185,14 +1185,14 @@ export const jointMoneyErc20Abi = [
 ] as const
 
 /**
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const jointMoneyErc20Address = {
-  31337: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+  43113: '0xC2cE8B452150dF3184f7E2048322524682941e94',
 } as const
 
 /**
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const jointMoneyErc20Config = {
   address: jointMoneyErc20Address,
@@ -2150,7 +2150,7 @@ export const useWatchJointMoneyWithdrawEvent =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useReadJointMoneyErc20 = /*#__PURE__*/ createUseReadContract({
   abi: jointMoneyErc20Abi,
@@ -2160,7 +2160,7 @@ export const useReadJointMoneyErc20 = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"getBalance"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useReadJointMoneyErc20GetBalance =
   /*#__PURE__*/ createUseReadContract({
@@ -2172,7 +2172,7 @@ export const useReadJointMoneyErc20GetBalance =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"groupCount"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useReadJointMoneyErc20GroupCount =
   /*#__PURE__*/ createUseReadContract({
@@ -2184,7 +2184,7 @@ export const useReadJointMoneyErc20GroupCount =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"groupSettings"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useReadJointMoneyErc20GroupSettings =
   /*#__PURE__*/ createUseReadContract({
@@ -2196,7 +2196,7 @@ export const useReadJointMoneyErc20GroupSettings =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"groupTokenAmount"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useReadJointMoneyErc20GroupTokenAmount =
   /*#__PURE__*/ createUseReadContract({
@@ -2208,7 +2208,7 @@ export const useReadJointMoneyErc20GroupTokenAmount =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"groupUserSettings"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useReadJointMoneyErc20GroupUserSettings =
   /*#__PURE__*/ createUseReadContract({
@@ -2220,7 +2220,7 @@ export const useReadJointMoneyErc20GroupUserSettings =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWriteJointMoneyErc20 = /*#__PURE__*/ createUseWriteContract({
   abi: jointMoneyErc20Abi,
@@ -2230,7 +2230,7 @@ export const useWriteJointMoneyErc20 = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"accept"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWriteJointMoneyErc20Accept =
   /*#__PURE__*/ createUseWriteContract({
@@ -2242,7 +2242,7 @@ export const useWriteJointMoneyErc20Accept =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"cancelInvitatioin"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWriteJointMoneyErc20CancelInvitatioin =
   /*#__PURE__*/ createUseWriteContract({
@@ -2254,7 +2254,7 @@ export const useWriteJointMoneyErc20CancelInvitatioin =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"createGroup"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWriteJointMoneyErc20CreateGroup =
   /*#__PURE__*/ createUseWriteContract({
@@ -2266,7 +2266,7 @@ export const useWriteJointMoneyErc20CreateGroup =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"deposit"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWriteJointMoneyErc20Deposit =
   /*#__PURE__*/ createUseWriteContract({
@@ -2278,7 +2278,7 @@ export const useWriteJointMoneyErc20Deposit =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"invite"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWriteJointMoneyErc20Invite =
   /*#__PURE__*/ createUseWriteContract({
@@ -2290,7 +2290,7 @@ export const useWriteJointMoneyErc20Invite =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"leaveGroup"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWriteJointMoneyErc20LeaveGroup =
   /*#__PURE__*/ createUseWriteContract({
@@ -2302,7 +2302,7 @@ export const useWriteJointMoneyErc20LeaveGroup =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"removeMember"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWriteJointMoneyErc20RemoveMember =
   /*#__PURE__*/ createUseWriteContract({
@@ -2314,7 +2314,7 @@ export const useWriteJointMoneyErc20RemoveMember =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"setAllowance"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWriteJointMoneyErc20SetAllowance =
   /*#__PURE__*/ createUseWriteContract({
@@ -2326,7 +2326,7 @@ export const useWriteJointMoneyErc20SetAllowance =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"withdraw"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWriteJointMoneyErc20Withdraw =
   /*#__PURE__*/ createUseWriteContract({
@@ -2338,7 +2338,7 @@ export const useWriteJointMoneyErc20Withdraw =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useSimulateJointMoneyErc20 =
   /*#__PURE__*/ createUseSimulateContract({
@@ -2349,7 +2349,7 @@ export const useSimulateJointMoneyErc20 =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"accept"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useSimulateJointMoneyErc20Accept =
   /*#__PURE__*/ createUseSimulateContract({
@@ -2361,7 +2361,7 @@ export const useSimulateJointMoneyErc20Accept =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"cancelInvitatioin"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useSimulateJointMoneyErc20CancelInvitatioin =
   /*#__PURE__*/ createUseSimulateContract({
@@ -2373,7 +2373,7 @@ export const useSimulateJointMoneyErc20CancelInvitatioin =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"createGroup"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useSimulateJointMoneyErc20CreateGroup =
   /*#__PURE__*/ createUseSimulateContract({
@@ -2385,7 +2385,7 @@ export const useSimulateJointMoneyErc20CreateGroup =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"deposit"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useSimulateJointMoneyErc20Deposit =
   /*#__PURE__*/ createUseSimulateContract({
@@ -2397,7 +2397,7 @@ export const useSimulateJointMoneyErc20Deposit =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"invite"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useSimulateJointMoneyErc20Invite =
   /*#__PURE__*/ createUseSimulateContract({
@@ -2409,7 +2409,7 @@ export const useSimulateJointMoneyErc20Invite =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"leaveGroup"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useSimulateJointMoneyErc20LeaveGroup =
   /*#__PURE__*/ createUseSimulateContract({
@@ -2421,7 +2421,7 @@ export const useSimulateJointMoneyErc20LeaveGroup =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"removeMember"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useSimulateJointMoneyErc20RemoveMember =
   /*#__PURE__*/ createUseSimulateContract({
@@ -2433,7 +2433,7 @@ export const useSimulateJointMoneyErc20RemoveMember =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"setAllowance"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useSimulateJointMoneyErc20SetAllowance =
   /*#__PURE__*/ createUseSimulateContract({
@@ -2445,7 +2445,7 @@ export const useSimulateJointMoneyErc20SetAllowance =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"withdraw"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useSimulateJointMoneyErc20Withdraw =
   /*#__PURE__*/ createUseSimulateContract({
@@ -2457,7 +2457,7 @@ export const useSimulateJointMoneyErc20Withdraw =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWatchJointMoneyErc20Event =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -2468,7 +2468,7 @@ export const useWatchJointMoneyErc20Event =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupAccepted"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWatchJointMoneyErc20GroupAcceptedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -2480,7 +2480,7 @@ export const useWatchJointMoneyErc20GroupAcceptedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupAllowanceSet"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWatchJointMoneyErc20GroupAllowanceSetEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -2492,7 +2492,7 @@ export const useWatchJointMoneyErc20GroupAllowanceSetEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupCreated"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWatchJointMoneyErc20GroupCreatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -2504,7 +2504,7 @@ export const useWatchJointMoneyErc20GroupCreatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupDeposited"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWatchJointMoneyErc20GroupDepositedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -2516,7 +2516,7 @@ export const useWatchJointMoneyErc20GroupDepositedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupInvitationCancelled"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWatchJointMoneyErc20GroupInvitationCancelledEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -2528,7 +2528,7 @@ export const useWatchJointMoneyErc20GroupInvitationCancelledEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupInvited"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWatchJointMoneyErc20GroupInvitedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -2540,7 +2540,7 @@ export const useWatchJointMoneyErc20GroupInvitedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupLeft"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWatchJointMoneyErc20GroupLeftEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -2552,7 +2552,7 @@ export const useWatchJointMoneyErc20GroupLeftEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `eventName` set to `"GroupWithdrawn"`
  *
- *
+ * [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
 export const useWatchJointMoneyErc20GroupWithdrawnEvent =
   /*#__PURE__*/ createUseWatchContractEvent({

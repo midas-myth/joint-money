@@ -2,7 +2,9 @@ import { createClient } from "graphql-ws";
 
 const graphqlClient = createClient({
   webSocketImpl: WebSocket,
-  url: `ws://localhost:4350/graphql`,
+  // url: `ws://localhost:4350/graphql`,
+  // https://378fd735-9869-4b80-b246-b22260165764.squids.live/joint-money/v/v1/graphql
+  url: `wss://378fd735-9869-4b80-b246-b22260165764.squids.live/joint-money/v/v1/graphql`,
 });
 
 // /** Your custom fetcher function */

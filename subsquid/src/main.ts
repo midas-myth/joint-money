@@ -6,13 +6,17 @@ import * as JointMoneyErc20Abi from "./abi/JointMoneyErc20";
 
 import { Group, Invite, Membership, TokenAmount } from "./model";
 
-const hardhatUrl = "http://0.0.0.0:8545/";
-
 const processor = new EvmBatchProcessor()
-  .setRpcEndpoint(hardhatUrl)
+  // .setGateway(process.env.GATEWAY!)
+  // ava-testnet:http
+  .setBlockRange({
+    from: 34014456,
+  })
+  .setRpcEndpoint(process.env.RPC_AVA_TESTNET_HTTP!)
   .setFinalityConfirmation(0)
   .addLog({
-    address: ["0x5FbDB2315678afecb367f032d93F642f64180aa3"],
+    // address: ["0x5FbDB2315678afecb367f032d93F642f64180aa3"],
+    address: [process.env.JOINT_MONEY_CONTRACT_ADDRESS!],
     topic0: [
       JointMoneyErc20Abi.events.GroupCreated.topic,
       JointMoneyErc20Abi.events.GroupAccepted.topic,

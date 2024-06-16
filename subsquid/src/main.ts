@@ -9,13 +9,12 @@ import { Group, Invite, Membership, TokenAmount } from "./model";
 const processor = new EvmBatchProcessor()
   // .setGateway(process.env.GATEWAY!)
   // ava-testnet:http
-  .setBlockRange({
-    from: 34014456,
-  })
-  .setRpcEndpoint(process.env.RPC_AVA_TESTNET_HTTP!)
+  // .setBlockRange({
+  //   from: 34014456,
+  // })
+  .setRpcEndpoint(process.env.RPC_ENDPOINT!)
   .setFinalityConfirmation(0)
   .addLog({
-    // address: ["0x5FbDB2315678afecb367f032d93F642f64180aa3"],
     address: [process.env.JOINT_MONEY_CONTRACT_ADDRESS!],
     topic0: [
       JointMoneyErc20Abi.events.GroupCreated.topic,

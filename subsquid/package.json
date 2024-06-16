@@ -10,7 +10,8 @@
     "mig:gen": "npx squid-typeorm-migration generate",
     "mig:apply": "npx squid-typeorm-migration apply",
     "drop": "npx tsx scripts/drop.ts",
-    "gen:all": "npm run gen && rm -rf db/migrations && npm run drop && npm run mig:gen && npm run mig:apply && node -r dotenv/config lib/main.js"
+    "gen:all": "npm run gen && npm run mig:gen && npm run mig:apply && node -r dotenv/config lib/main.js",
+    "dev:gql": "squid-graphql-server --subscriptions --subscription-poll-interval 1000"
   },
   "keywords": [],
   "author": "",

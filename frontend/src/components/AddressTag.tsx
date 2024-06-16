@@ -1,4 +1,4 @@
-import { Address } from "viem";
+import { Address, isAddressEqual } from "viem";
 import { useAccount, useEnsAvatar, useEnsName } from "wagmi";
 
 export default function AddressTag(props: { address: Address }) {
@@ -9,7 +9,10 @@ export default function AddressTag(props: { address: Address }) {
   return (
     <div className="inline-block max-w-full min-w-0 px-1 overflow-hidden border border-gray-300 rounded text-ellipsis">
       {ensName && ensAvatar && <img src={ensAvatar} alt={ensName} />}
-      {currentAccountAddress === props.address ? "You" : props.address}
+      {currentAccountAddress &&
+      isAddressEqual(currentAccountAddress, props.address)
+        ? "You"
+        : props.address}
     </div>
   );
 }

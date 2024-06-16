@@ -3,6 +3,7 @@ import { entries } from "lodash";
 import { useChainId } from "wagmi";
 
 import tokens from "../tokens";
+import { TokenInfo } from "./types";
 
 export default function useTokensByAddress() {
   const chainId = useChainId();
@@ -15,10 +16,7 @@ export default function useTokensByAddress() {
         acc[token.address.toLowerCase()] = { ...token, symbol };
         return acc;
       },
-      {} as Record<
-        string,
-        { name: string; decimals: number; symbol: string; address: string }
-      >,
+      {} as Record<string, TokenInfo>,
     );
   }, [tokensOnChain]);
 

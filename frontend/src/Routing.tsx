@@ -6,6 +6,7 @@ import FullscreenLoader from "./components/FullscreenLoader";
 const LazyMainPage = lazy(() => import("./pages/Main"));
 const LazyGroupCreatePage = lazy(() => import("./pages/GroupCreate"));
 const LazyGroupPage = lazy(() => import("./pages/Group"));
+const LazyGroupDepositPage = lazy(() => import("./pages/Group/pages/Deposit"));
 const LazyInvitesPage = lazy(() => import("./pages/Invites"));
 const LazyAliasesPage = lazy(() => import("./pages/Aliases"));
 
@@ -31,6 +32,14 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<FullscreenLoader />}>
         <LazyGroupPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/groups/:id/deposit",
+    element: (
+      <Suspense fallback={<FullscreenLoader />}>
+        <LazyGroupDepositPage />
       </Suspense>
     ),
   },

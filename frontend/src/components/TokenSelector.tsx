@@ -85,7 +85,13 @@ export default function TokenSelector(props: {
         <Input
           placeholder="Token Address"
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            setText(value);
+            if (isAddress(value)) {
+              props.onChange(value);
+            }
+          }}
         />
       )}
       <select

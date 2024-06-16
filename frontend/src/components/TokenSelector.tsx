@@ -9,8 +9,8 @@ import tokens from "../tokens";
 import Input from "./Input";
 
 export default function TokenSelector(props: {
-  value: string | undefined;
-  onChange: (value: string | undefined) => void;
+  value: Address | undefined;
+  onChange: (value: Address | undefined) => void;
 }) {
   const chainId = useChainId();
   const { address } = useAccount();

@@ -519,6 +519,13 @@ export type GetGroupSubscriptionVariables = Exact<{
 
 export type GetGroupSubscription = { __typename?: 'Subscription', groupById?: { __typename?: 'Group', id: string, admin: string, members: Array<{ __typename?: 'Membership', address: string, dailyAllowance: any, dailySpent: any, lastSpentAt: any }>, tokenAmounts: Array<{ __typename?: 'TokenAmount', tokenAddress: string, amount: any }>, invites: Array<{ __typename?: 'Invite', invitee: string }> } | null };
 
+export type GetGroupBalanceSubscriptionVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type GetGroupBalanceSubscription = { __typename?: 'Subscription', groupById?: { __typename?: 'Group', tokenAmounts: Array<{ __typename?: 'TokenAmount', tokenAddress: string, amount: any }> } | null };
+
 export type GetMyInvitesSubscriptionVariables = Exact<{
   account: Scalars['String']['input'];
 }>;
@@ -569,6 +576,16 @@ export const GetGroupDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetGroupSubscription, GetGroupSubscriptionVariables>;
+export const GetGroupBalanceDocument = new TypedDocumentString(`
+    subscription GetGroupBalance($id: String!) {
+  groupById(id: $id) {
+    tokenAmounts {
+      tokenAddress
+      amount
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetGroupBalanceSubscription, GetGroupBalanceSubscriptionVariables>;
 export const GetMyInvitesDocument = new TypedDocumentString(`
     subscription GetMyInvites($account: String!) {
   invites(where: {invitee_eq: $account}) {

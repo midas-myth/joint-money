@@ -5,17 +5,14 @@ import { useAccount } from "wagmi";
 
 import AddressTag from "../../components/AddressTag";
 import Heading from "../../components/Heading";
+import InternalLink from "../../components/InternalLink";
 import Page from "../../components/Page";
-import displayMoney from "../../displayMoney";
 import useGroup from "../../hooks/useGroup";
-import useTokensByAddress from "../../hooks/useTokensByAddress";
 import AllowanceRow from "./AllowanceRow";
-// import DeleteRow from "./DeleteRow";
-import DepositRow from "./DepositRow";
 import Invitee from "./Invitee";
 import InviteRow from "./InviteRow";
 import Member from "./Member";
-import WithdrawRow from "./WithdrawRow";
+import TokenBalances from "./TokenBalances";
 
 export default function Group() {
   const { address } = useAccount();
@@ -39,8 +36,6 @@ export default function Group() {
     };
   }, [address, group]);
 
-  const chainTokens = useTokensByAddress();
-
   if (groupQuery.isLoading) {
     return (
       <Page>
@@ -61,7 +56,7 @@ export default function Group() {
 
   return (
     <Page>
-      <Heading>Group</Heading>
+      <Heading>Group {groupId}</Heading>
       <div className="flex flex-col gap-2">
         <div
           className="flex flex-col gap-1 p-2 border border-gray-300 rounded"
@@ -105,36 +100,23 @@ export default function Group() {
               ))} */}
             </div>
           </div>
-          <div>
-            Balances:
-            <div>
-              {group.tokenAmounts.map((tokenAmount) => (
-                <div
-                  key={tokenAmount.tokenAddress}
-                  className="flex items-center gap-2"
-                >
-                  <div>{chainTokens[tokenAmount.tokenAddress].name}</div>
-                  <div>
-                    {displayMoney(
-                      tokenAmount.amount,
-                      chainTokens[tokenAmount.tokenAddress].decimals,
-                      false,
-                    )}{" "}
-                    {chainTokens[tokenAmount.tokenAddress].symbol}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* {Balances(group)} */}
+          <TokenBalances group={group} />
           {/* <div>
             Your daily allowance:{" "}
             {displayMoney(dailyAllowance, isDailyAllowanceLoading)}
             wei
           </div> */}
         </div>
-        {isMember && <DepositRow groupId={group.id} />}
+        {isMember && (
+          <InternalLink to={`/groups/${groupId}/deposit`}>Deposit</InternalLink>
+        )}
         {isAdmin && <InviteRow groupId={group.id} />}
-        {isMember && <WithdrawRow groupId={group.id} />}
+        {isMember && (
+          <InternalLink to={`/groups/${groupId}/withdraw`}>
+            Withdraw
+          </InternalLink>
+        )}
         {isAdmin && <AllowanceRow groupId={group.id} />}
 
         {/* {isAdmin && <DeleteRow groupId={group.id} />} */}

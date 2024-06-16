@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Address, isAddress } from "viem";
+import { Address, isAddress, parseUnits } from "viem";
 import { useAccount } from "wagmi";
 
 import Button from "../../../components/Button";
@@ -36,7 +36,7 @@ export default function Deposit() {
     }
 
     try {
-      return BigInt(amountText) * 10n ** BigInt(tokenInfo.decimals ?? 18);
+      return parseUnits(amountText, tokenInfo.decimals ?? 18);
     } catch {
       return undefined;
     }

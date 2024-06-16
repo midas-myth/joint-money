@@ -100,7 +100,7 @@ export default function TokenSelector(props: {
             setIsCustom(false);
             setText("");
           }
-          props.onChange(e.target.value);
+          props.onChange(e.target.value as Address);
         }}
       >
         <option value="">Select Token</option>

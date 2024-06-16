@@ -108,15 +108,27 @@ export default function Group() {
             wei
           </div> */}
         </div>
+
         {isMember && (
-          <InternalLink to={`/groups/${groupId}/deposit`}>Deposit</InternalLink>
+          <div className="flex gap-2">
+            <InternalLink
+              bordered
+              className="w-full"
+              to={`/groups/${groupId}/deposit`}
+            >
+              Deposit
+            </InternalLink>
+            <InternalLink
+              bordered
+              className="w-full"
+              to={`/groups/${groupId}/withdraw`}
+            >
+              Withdraw
+            </InternalLink>
+          </div>
         )}
+
         {isAdmin && <InviteRow groupId={group.id} />}
-        {isMember && (
-          <InternalLink to={`/groups/${groupId}/withdraw`}>
-            Withdraw
-          </InternalLink>
-        )}
         {isAdmin && <AllowanceRow groupId={group.id} />}
 
         {/* {isAdmin && <DeleteRow groupId={group.id} />} */}

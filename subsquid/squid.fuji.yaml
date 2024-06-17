@@ -17,5 +17,6 @@ deploy:
     cmd: ["sqd", "process:prod"]
     env:
       JOINT_MONEY_CONTRACT_ADDRESS: "0xC2cE8B452150dF3184f7E2048322524682941e94"
+      NET_NAME: fuji
   api:
     cmd: ["sqd", "serve:prod"]

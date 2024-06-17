@@ -1,4 +1,4 @@
-import { EvmBatchProcessor } from "@subsquid/evm-processor";
+import { EvmBatchProcessor, assertNotNull } from "@subsquid/evm-processor";
 import { TypeormDatabase } from "@subsquid/typeorm-store";
 import { ethers } from "ethers";
 
@@ -6,13 +6,27 @@ import * as JointMoneyErc20Abi from "./abi/JointMoneyErc20";
 
 import { Group, Invite, Membership, TokenAmount } from "./model";
 
+const netName = process.env.NET_NAME || "hardhat";
+
+let rpcEndpoint: string;
+let startBlock: number | undefined;
+let gateway: string | undefined;
+
+if (netName === "fuji") {
+  rpcEndpoint = assertNotNull(process.env.RPC_AVA_TESTNET_HTTP);
+  startBlock = 34014456;
+  gateway = "https://v2.archive.subsquid.io/network/avalanche-testnet";
+} else if (netName === "hardhat") {
+  rpcEndpoint = assertNotNull(process.env.RPC_HARDHAT_HTTP);
+} else {
+  throw new Error("Unknown netName: " + netName);
+}
+
 const processor = new EvmBatchProcessor()
-  // .setGateway(process.env.GATEWAY!)
-  // ava-testnet:http
-  // .setBlockRange({
-  //   from: 34014456,
-  // })
-  .setRpcEndpoint(process.env.RPC_ENDPOINT!)
+  .setRpcEndpoint({
+    url: rpcEndpoint,
+    rateLimit: 10,
+  })
   .setFinalityConfirmation(0)
   .addLog({
     address: [process.env.JOINT_MONEY_CONTRACT_ADDRESS!],
@@ -24,6 +38,16 @@ const processor = new EvmBatchProcessor()
       JointMoneyErc20Abi.events.GroupWithdrawn.topic,
     ],
   });
+
+if (startBlock !== undefined) {
+  processor.setBlockRange({
+    from: startBlock,
+  });
+}
+
+if (gateway !== undefined) {
+  processor.setGateway(gateway);
+}
 
 const db = new TypeormDatabase();
 

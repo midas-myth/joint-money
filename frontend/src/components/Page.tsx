@@ -1,13 +1,15 @@
-import { PropsWithChildren, useMemo } from "react";
+import { PropsWithChildren, useEffect, useMemo } from "react";
 import { uniqBy } from "lodash";
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 import { Link } from "react-router-dom";
+import { avalancheFuji } from "viem/chains";
 import {
   useAccount,
   useChainId,
   useChains,
   useConnect,
   useDisconnect,
+  useWalletClient,
 } from "wagmi";
 
 import Button from "./Button";
@@ -16,8 +18,8 @@ import InternalLink from "./InternalLink";
 
 function WalletOptions() {
   const { connect, connectors } = useConnect();
-
-  const { address, isConnected } = useAccount();
+  const walletClientQuery = useWalletClient();
+  const { address, isConnected, chainId: accountChainId } = useAccount();
   const { disconnect } = useDisconnect();
   const chainId = useChainId();
   const chains = useChains();
@@ -28,11 +30,20 @@ function WalletOptions() {
     [connectors],
   );
 
+  useEffect(() => {
+    if (walletClientQuery.data && accountChainId !== chainId) {
+      walletClientQuery.data?.addChain({ chain: avalancheFuji });
+    }
+  }, [accountChainId, chainId, walletClientQuery.data]);
+
   return (
     <div className="flex flex-wrap items-center justify-end gap-1">
       {!isConnected &&
         uniqueConnectors.map((connector) => (
-          <Button key={connector.id} onClick={() => connect({ connector })}>
+          <Button
+            key={connector.id}
+            onClick={() => connect({ connector, chainId: chainId })}
+          >
             {connector.name}
           </Button>
         ))}

@@ -28,9 +28,9 @@ describe("JointMoney", () => {
   });
 
   it("user can create a group", async () => {
-    await expect(jointMoney.createGroup())
+    await expect(jointMoney.createGroup([]))
       .to.emit(jointMoney, "GroupCreated")
-      .withArgs(1, owner.address);
+      .withArgs(1, owner.address, []);
   });
 
   it("user can deposit into a group", async () => {
@@ -81,9 +81,16 @@ describe("JointMoney", () => {
   });
 
   it("users can get invited to a group", async () => {
-    await expect(jointMoney.invite(1, addr1.address))
+    await expect(
+      jointMoney.invite(1, [
+        {
+          invitee: addr1.address,
+          role: 0,
+        },
+      ])
+    )
       .to.emit(jointMoney, "GroupInvited")
-      .withArgs(1, addr1.address);
+      .withArgs(1, [[addr1.address, 0]]);
   });
 
   it("invited users can join a group", async () => {

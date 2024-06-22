@@ -5,30 +5,40 @@ import "hardhat/console.sol";
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+enum Role {
+    Viewer,
+    Manager,
+    Admin
+}
+
+struct UserSettings {
+    bool isMember;
+    Role role;
+    // Allowance details
+    uint dailyAllowance;
+    uint dailySpent;
+    uint lastSpentAt;
+    // Invitation details
+    bool isInvited;
+}
+
+struct GroupSettings {
+    address admin;
+}
+
+struct Invite {
+    address invitee;
+    Role role;
+}
+
 contract JointMoneyErc20 {
     uint public groupCount = 0;
 
     mapping(uint => mapping(address => uint256)) public groupTokenAmount;
-
-    struct UserSettings {
-        bool isMember;
-        // Allowance details
-        uint dailyAllowance;
-        uint dailySpent;
-        uint lastSpentAt;
-        // Invitation details
-        bool isInvited;
-    }
-
     mapping(uint => mapping(address => UserSettings)) public groupUserSettings;
-
-    struct GroupSettings {
-        address admin;
-    }
-
     mapping(uint => GroupSettings) public groupSettings;
 
-    event GroupCreated(uint id, address admin);
+    event GroupCreated(uint id, address admin, Invite[] invites);
     event GroupDeposited(
         uint id,
         address member,
@@ -36,13 +46,15 @@ contract JointMoneyErc20 {
         uint amount
     );
     event GroupWithdrawn(uint id, address member, address token, uint amount);
-    event GroupInvited(uint id, address invitee);
+    event GroupInvited(uint id, Invite[] invites);
     event GroupAccepted(uint id, address member);
     event GroupAllowanceSet(uint id, address member, uint amount);
     event GroupInvitationCancelled(uint id, address invitee);
     event GroupLeft(uint id, address member);
 
-    function createGroup() public {
+    function createGroup(
+        Invite[] calldata invites
+    ) public {
         groupCount++;
         groupSettings[groupCount] = GroupSettings(msg.sender);
         groupUserSettings[groupCount][msg.sender] = UserSettings({
@@ -50,10 +62,17 @@ contract JointMoneyErc20 {
             dailyAllowance: type(uint).max,
             dailySpent: 0,
             lastSpentAt: 0,
-            isInvited: false
+            isInvited: false,
+            role: Role.Admin
         });
 
-        emit GroupCreated(groupCount, msg.sender);
+        for (uint i = 0; i < invites.length; i++) {
+            address invitee = invites[i].invitee;
+            groupUserSettings[groupCount][invitee].isInvited = true;
+            groupUserSettings[groupCount][invitee].role = invites[i].role;
+        }
+
+        emit GroupCreated(groupCount, msg.sender, invites);
     }
 
     function deposit(uint groupId, address tokenAddress, uint amount) public {
@@ -132,15 +151,19 @@ contract JointMoneyErc20 {
         emit GroupWithdrawn(groupId, msg.sender, tokenAddress, amount);
     }
 
-    function invite(uint groupId, address invitee) public {
+    function invite(uint groupId, Invite[] calldata invites) public {
         require(
             groupSettings[groupId].admin == msg.sender,
             "You are not the admin of this group"
         );
 
-        groupUserSettings[groupId][invitee].isInvited = true;
+        for (uint i = 0; i < invites.length; i++) {
+            address invitee = invites[i].invitee;
+            groupUserSettings[groupId][invitee].isInvited = true;
+            groupUserSettings[groupId][invitee].role = invites[i].role;
+        }
 
-        emit GroupInvited(groupId, invitee);
+        emit GroupInvited(groupId, invites);
     }
 
     function accept(uint groupId) public {
@@ -165,7 +188,7 @@ contract JointMoneyErc20 {
         emit GroupAllowanceSet(groupId, user, amount);
     }
 
-    function cancelInvitatioin(uint groupId, address invitee) public {
+    function cancelInvitation(uint groupId, address invitee) public {
         require(
             groupSettings[groupId].admin == msg.sender,
             "You are not the admin of this group"
@@ -177,6 +200,8 @@ contract JointMoneyErc20 {
         );
 
         groupUserSettings[groupId][invitee].isInvited = false;
+        groupUserSettings[groupId][invitee].role = Role.Viewer;
+        
         emit GroupInvitationCancelled(groupId, invitee);
     }
 

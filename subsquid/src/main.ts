@@ -107,7 +107,11 @@ processor.run(db, async (ctx) => {
           lastSpentAt: 0n,
         });
 
+        group.members ||= [];
         group.members.push(newMember);
+
+        group.invites ||= [];
+        group.invites = group.invites.filter((i) => i.invitee !== member);
 
         await ctx.store.save(group);
         await ctx.store.save(newMember);
@@ -143,6 +147,7 @@ processor.run(db, async (ctx) => {
           invitee,
         });
 
+        group.invites ||= [];
         group.invites.push(invite);
 
         await ctx.store.save(group);

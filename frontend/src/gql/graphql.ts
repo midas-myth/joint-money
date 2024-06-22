@@ -122,6 +122,7 @@ export type Invite = {
   group: Group;
   id: Scalars['String']['output'];
   invitee: Scalars['String']['output'];
+  role: Role;
 };
 
 export type InviteEdge = {
@@ -154,7 +155,13 @@ export enum InviteOrderByInput {
   InviteeAscNullsLast = 'invitee_ASC_NULLS_LAST',
   InviteeDesc = 'invitee_DESC',
   InviteeDescNullsFirst = 'invitee_DESC_NULLS_FIRST',
-  InviteeDescNullsLast = 'invitee_DESC_NULLS_LAST'
+  InviteeDescNullsLast = 'invitee_DESC_NULLS_LAST',
+  RoleAsc = 'role_ASC',
+  RoleAscNullsFirst = 'role_ASC_NULLS_FIRST',
+  RoleAscNullsLast = 'role_ASC_NULLS_LAST',
+  RoleDesc = 'role_DESC',
+  RoleDescNullsFirst = 'role_DESC_NULLS_FIRST',
+  RoleDescNullsLast = 'role_DESC_NULLS_LAST'
 }
 
 export type InviteWhereInput = {
@@ -196,6 +203,11 @@ export type InviteWhereInput = {
   invitee_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   invitee_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   invitee_startsWith?: InputMaybe<Scalars['String']['input']>;
+  role_eq?: InputMaybe<Role>;
+  role_in?: InputMaybe<Array<Role>>;
+  role_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  role_not_eq?: InputMaybe<Role>;
+  role_not_in?: InputMaybe<Array<Role>>;
 };
 
 export type InvitesConnection = {
@@ -213,6 +225,7 @@ export type Membership = {
   group: Group;
   id: Scalars['String']['output'];
   lastSpentAt: Scalars['BigInt']['output'];
+  role: Role;
 };
 
 export type MembershipEdge = {
@@ -263,7 +276,13 @@ export enum MembershipOrderByInput {
   LastSpentAtAscNullsLast = 'lastSpentAt_ASC_NULLS_LAST',
   LastSpentAtDesc = 'lastSpentAt_DESC',
   LastSpentAtDescNullsFirst = 'lastSpentAt_DESC_NULLS_FIRST',
-  LastSpentAtDescNullsLast = 'lastSpentAt_DESC_NULLS_LAST'
+  LastSpentAtDescNullsLast = 'lastSpentAt_DESC_NULLS_LAST',
+  RoleAsc = 'role_ASC',
+  RoleAscNullsFirst = 'role_ASC_NULLS_FIRST',
+  RoleAscNullsLast = 'role_ASC_NULLS_LAST',
+  RoleDesc = 'role_DESC',
+  RoleDescNullsFirst = 'role_DESC_NULLS_FIRST',
+  RoleDescNullsLast = 'role_DESC_NULLS_LAST'
 }
 
 export type MembershipWhereInput = {
@@ -332,6 +351,11 @@ export type MembershipWhereInput = {
   lastSpentAt_lte?: InputMaybe<Scalars['BigInt']['input']>;
   lastSpentAt_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
   lastSpentAt_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  role_eq?: InputMaybe<Role>;
+  role_in?: InputMaybe<Array<Role>>;
+  role_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  role_not_eq?: InputMaybe<Role>;
+  role_not_in?: InputMaybe<Array<Role>>;
 };
 
 export type MembershipsConnection = {
@@ -446,6 +470,12 @@ export type QueryMembershipsConnectionArgs = {
   orderBy: Array<MembershipOrderByInput>;
   where?: InputMaybe<MembershipWhereInput>;
 };
+
+export enum Role {
+  Admin = 'ADMIN',
+  Manager = 'MANAGER',
+  Viewer = 'VIEWER'
+}
 
 export type SquidStatus = {
   __typename?: 'SquidStatus';

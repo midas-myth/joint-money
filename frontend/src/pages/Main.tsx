@@ -6,9 +6,6 @@ import Page from "../components/Page";
 import useInvites from "../hooks/useInvites";
 import useMyGroups from "../hooks/useMyGroups";
 
-// import { useReadJointMoneyGetMyGroups } from "../generated";
-// import useInvites from "../hooks/useInvites";
-
 export default function Main() {
   const { address } = useAccount();
 

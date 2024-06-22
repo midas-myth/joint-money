@@ -10,7 +10,6 @@ import Page from "../../components/Page";
 import useGroup from "../../hooks/useGroup";
 import AllowanceRow from "./AllowanceRow";
 import Invitee from "./Invitee";
-import InviteRow from "./InviteRow";
 import Member from "./Member";
 import TokenBalances from "./TokenBalances";
 
@@ -95,18 +94,9 @@ export default function Group() {
                   address={invite.invitee as Address}
                 />
               ))}
-              {/* {group.invites.map((i) => (
-                <Invitee key={i} groupId={group.id} address={i} />
-              ))} */}
             </div>
           </div>
-          {/* {Balances(group)} */}
           <TokenBalances group={group} />
-          {/* <div>
-            Your daily allowance:{" "}
-            {displayMoney(dailyAllowance, isDailyAllowanceLoading)}
-            wei
-          </div> */}
         </div>
 
         {isMember && (
@@ -128,7 +118,11 @@ export default function Group() {
           </div>
         )}
 
-        {isAdmin && <InviteRow groupId={group.id} />}
+        {isAdmin && (
+          <InternalLink bordered to={`/groups/${groupId}/invite`}>
+            Invite
+          </InternalLink>
+        )}
         {isAdmin && <AllowanceRow groupId={group.id} />}
 
         {/* {isAdmin && <DeleteRow groupId={group.id} />} */}

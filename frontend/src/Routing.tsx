@@ -10,6 +10,7 @@ const LazyGroupDepositPage = lazy(() => import("./pages/Group/pages/Deposit"));
 const LazyGroupWithdrawPage = lazy(
   () => import("./pages/Group/pages/Withdraw"),
 );
+const LazyGroupInvitePage = lazy(() => import("./pages/Group/pages/Invite"));
 const LazyInvitesPage = lazy(() => import("./pages/Invites"));
 const LazyAliasesPage = lazy(() => import("./pages/Aliases"));
 
@@ -51,6 +52,14 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<FullscreenLoader />}>
         <LazyGroupWithdrawPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/groups/:id/invite",
+    element: (
+      <Suspense fallback={<FullscreenLoader />}>
+        <LazyGroupInvitePage />
       </Suspense>
     ),
   },

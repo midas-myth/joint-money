@@ -951,6 +951,16 @@ export const jointMoneyErc20Abi = [
         type: 'address',
         indexed: false,
       },
+      {
+        name: 'invites',
+        internalType: 'struct Invite[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'invitee', internalType: 'address', type: 'address' },
+          { name: 'role', internalType: 'enum Role', type: 'uint8' },
+        ],
+        indexed: false,
+      },
     ],
     name: 'GroupCreated',
   },
@@ -1000,9 +1010,13 @@ export const jointMoneyErc20Abi = [
     inputs: [
       { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
       {
-        name: 'invitee',
-        internalType: 'address',
-        type: 'address',
+        name: 'invites',
+        internalType: 'struct Invite[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'invitee', internalType: 'address', type: 'address' },
+          { name: 'role', internalType: 'enum Role', type: 'uint8' },
+        ],
         indexed: false,
       },
     ],
@@ -1061,13 +1075,23 @@ export const jointMoneyErc20Abi = [
       { name: 'groupId', internalType: 'uint256', type: 'uint256' },
       { name: 'invitee', internalType: 'address', type: 'address' },
     ],
-    name: 'cancelInvitatioin',
+    name: 'cancelInvitation',
     outputs: [],
     stateMutability: 'nonpayable',
   },
   {
     type: 'function',
-    inputs: [],
+    inputs: [
+      {
+        name: 'invites',
+        internalType: 'struct Invite[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'invitee', internalType: 'address', type: 'address' },
+          { name: 'role', internalType: 'enum Role', type: 'uint8' },
+        ],
+      },
+    ],
     name: 'createGroup',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -1126,6 +1150,7 @@ export const jointMoneyErc20Abi = [
     name: 'groupUserSettings',
     outputs: [
       { name: 'isMember', internalType: 'bool', type: 'bool' },
+      { name: 'role', internalType: 'enum Role', type: 'uint8' },
       { name: 'dailyAllowance', internalType: 'uint256', type: 'uint256' },
       { name: 'dailySpent', internalType: 'uint256', type: 'uint256' },
       { name: 'lastSpentAt', internalType: 'uint256', type: 'uint256' },
@@ -1137,7 +1162,15 @@ export const jointMoneyErc20Abi = [
     type: 'function',
     inputs: [
       { name: 'groupId', internalType: 'uint256', type: 'uint256' },
-      { name: 'invitee', internalType: 'address', type: 'address' },
+      {
+        name: 'invites',
+        internalType: 'struct Invite[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'invitee', internalType: 'address', type: 'address' },
+          { name: 'role', internalType: 'enum Role', type: 'uint8' },
+        ],
+      },
     ],
     name: 'invite',
     outputs: [],
@@ -2252,16 +2285,16 @@ export const useWriteJointMoneyErc20Accept =
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"cancelInvitatioin"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"cancelInvitation"`
  *
  * -
  * - [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
-export const useWriteJointMoneyErc20CancelInvitatioin =
+export const useWriteJointMoneyErc20CancelInvitation =
   /*#__PURE__*/ createUseWriteContract({
     abi: jointMoneyErc20Abi,
     address: jointMoneyErc20Address,
-    functionName: 'cancelInvitatioin',
+    functionName: 'cancelInvitation',
   })
 
 /**
@@ -2381,16 +2414,16 @@ export const useSimulateJointMoneyErc20Accept =
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"cancelInvitatioin"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link jointMoneyErc20Abi}__ and `functionName` set to `"cancelInvitation"`
  *
  * -
  * - [__View Contract on Avalanche Fuji Snow Trace__](https://testnet.snowtrace.io/address/0xC2cE8B452150dF3184f7E2048322524682941e94)
  */
-export const useSimulateJointMoneyErc20CancelInvitatioin =
+export const useSimulateJointMoneyErc20CancelInvitation =
   /*#__PURE__*/ createUseSimulateContract({
     abi: jointMoneyErc20Abi,
     address: jointMoneyErc20Address,
-    functionName: 'cancelInvitatioin',
+    functionName: 'cancelInvitation',
   })
 
 /**

@@ -1,4 +1,5 @@
 export * from "./group.model"
 export * from "./_tokenAmount"
 export * from "./membership.model"
+export * from "./_role"
 export * from "./invite.model"

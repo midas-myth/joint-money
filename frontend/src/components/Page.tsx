@@ -48,13 +48,13 @@ function WalletOptions() {
           </Button>
         ))}
 
-      {isConnected && (
+      {isConnected && address && (
         <>
           {currentChain?.name}
           <Jazzicon
             paperStyles={{ borderRadius: "0.25rem" }}
             diameter={32}
-            seed={jsNumberForAddress(address!)}
+            seed={jsNumberForAddress(address)}
           />
           <Button onClick={() => disconnect()}>Disconnect</Button>
         </>

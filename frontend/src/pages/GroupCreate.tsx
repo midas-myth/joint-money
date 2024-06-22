@@ -12,7 +12,7 @@ export default function GroupCreate() {
   const navigate = useNavigate();
 
   const handleCreateGroup = async () => {
-    await writeContractAsync({ args: [], account: address });
+    await writeContractAsync({ args: [[]], account: address });
     navigate("/");
   };
 

@@ -6,8 +6,15 @@ type Group @entity {
   invites: [Invite!]! @derivedFrom(field: "group")
 }
 
+enum Role {
+  VIEWER
+  MANAGER
+  ADMIN
+}
+
 type Membership @entity @index(fields: ["group", "address"], unique: true) {
   id: ID!
+  role: Role!
   group: Group!
   address: String! @index
   dailyAllowance: BigInt!
@@ -24,4 +31,5 @@ type Invite @entity @index(fields: ["invitee", "group"], unique: true) {
   id: ID!
   group: Group!
   invitee: String! @index
+  role: Role!
 }

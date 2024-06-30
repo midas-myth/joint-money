@@ -33,3 +33,23 @@ type Invite @entity @index(fields: ["invitee", "group"], unique: true) {
   invitee: String! @index
   role: Role!
 }
+
+enum OperationType {
+  DEPOSIT
+  WITHDRAWAL
+}
+
+type Operation
+  @entity
+  @index(fields: ["group"])
+  @index(fields: ["group", "member"])
+  @index(fields: ["group", "to"])
+  @index(fields: ["group", "tokenAddress"]) {
+  id: ID!
+  group: Group!
+  member: String!
+  type: OperationType!
+  tokenAddress: String!
+  amount: BigInt!
+  to: String
+}

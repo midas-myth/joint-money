@@ -16,6 +16,7 @@ import * as types from './graphql';
 const documents = {
     "\n  subscription GetGroup($id: String!) {\n    groupById(id: $id) {\n      id\n      admin\n      members {\n        address\n        dailyAllowance\n        dailySpent\n        lastSpentAt\n      }\n      tokenAmounts {\n        tokenAddress\n        amount\n      }\n      invites {\n        invitee\n      }\n    }\n  }\n": types.GetGroupDocument,
     "\n  subscription GetGroupBalance($id: String!) {\n    groupById(id: $id) {\n      tokenAmounts {\n        tokenAddress\n        amount\n      }\n    }\n  }\n": types.GetGroupBalanceDocument,
+    "\n  subscription GetGroupOperations($groupId: String!) {\n    operations(where: { group: { id_eq: $groupId } }) {\n      amount\n      id\n      member\n      to\n      tokenAddress\n      type\n    }\n  }\n": types.GetGroupOperationsDocument,
     "\n  subscription GetMyInvites($account: String!) {\n    invites(where: { invitee_eq: $account }) {\n      group {\n        id\n      }\n    }\n  }\n": types.GetMyInvitesDocument,
     "\n  subscription GetMyGroups($address: String!) {\n    memberships(where: { address_eq: $address }) {\n      group {\n        admin\n        id\n        members {\n          address\n          dailyAllowance\n          dailySpent\n          lastSpentAt\n        }\n        invites {\n          invitee\n        }\n      }\n    }\n  }\n": types.GetMyGroupsDocument,
 };
@@ -28,6 +29,10 @@ export function graphql(source: "\n  subscription GetGroup($id: String!) {\n    
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  subscription GetGroupBalance($id: String!) {\n    groupById(id: $id) {\n      tokenAmounts {\n        tokenAddress\n        amount\n      }\n    }\n  }\n"): typeof import('./graphql').GetGroupBalanceDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  subscription GetGroupOperations($groupId: String!) {\n    operations(where: { group: { id_eq: $groupId } }) {\n      amount\n      id\n      member\n      to\n      tokenAddress\n      type\n    }\n  }\n"): typeof import('./graphql').GetGroupOperationsDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

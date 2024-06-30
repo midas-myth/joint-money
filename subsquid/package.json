@@ -26,6 +26,7 @@
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
     "@subsquid/evm-typegen": "^4.1.4",
     "@subsquid/typeorm-codegen": "^2.0.1",
     "tsx": "^4.15.2",

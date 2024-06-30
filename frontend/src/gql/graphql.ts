@@ -365,6 +365,175 @@ export type MembershipsConnection = {
   totalCount: Scalars['Int']['output'];
 };
 
+export type Operation = {
+  __typename?: 'Operation';
+  amount: Scalars['BigInt']['output'];
+  group: Group;
+  id: Scalars['String']['output'];
+  member: Scalars['String']['output'];
+  to?: Maybe<Scalars['String']['output']>;
+  tokenAddress: Scalars['String']['output'];
+  type: OperationType;
+};
+
+export type OperationEdge = {
+  __typename?: 'OperationEdge';
+  cursor: Scalars['String']['output'];
+  node: Operation;
+};
+
+export enum OperationOrderByInput {
+  AmountAsc = 'amount_ASC',
+  AmountAscNullsFirst = 'amount_ASC_NULLS_FIRST',
+  AmountAscNullsLast = 'amount_ASC_NULLS_LAST',
+  AmountDesc = 'amount_DESC',
+  AmountDescNullsFirst = 'amount_DESC_NULLS_FIRST',
+  AmountDescNullsLast = 'amount_DESC_NULLS_LAST',
+  GroupAdminAsc = 'group_admin_ASC',
+  GroupAdminAscNullsFirst = 'group_admin_ASC_NULLS_FIRST',
+  GroupAdminAscNullsLast = 'group_admin_ASC_NULLS_LAST',
+  GroupAdminDesc = 'group_admin_DESC',
+  GroupAdminDescNullsFirst = 'group_admin_DESC_NULLS_FIRST',
+  GroupAdminDescNullsLast = 'group_admin_DESC_NULLS_LAST',
+  GroupIdAsc = 'group_id_ASC',
+  GroupIdAscNullsFirst = 'group_id_ASC_NULLS_FIRST',
+  GroupIdAscNullsLast = 'group_id_ASC_NULLS_LAST',
+  GroupIdDesc = 'group_id_DESC',
+  GroupIdDescNullsFirst = 'group_id_DESC_NULLS_FIRST',
+  GroupIdDescNullsLast = 'group_id_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  MemberAsc = 'member_ASC',
+  MemberAscNullsFirst = 'member_ASC_NULLS_FIRST',
+  MemberAscNullsLast = 'member_ASC_NULLS_LAST',
+  MemberDesc = 'member_DESC',
+  MemberDescNullsFirst = 'member_DESC_NULLS_FIRST',
+  MemberDescNullsLast = 'member_DESC_NULLS_LAST',
+  ToAsc = 'to_ASC',
+  ToAscNullsFirst = 'to_ASC_NULLS_FIRST',
+  ToAscNullsLast = 'to_ASC_NULLS_LAST',
+  ToDesc = 'to_DESC',
+  ToDescNullsFirst = 'to_DESC_NULLS_FIRST',
+  ToDescNullsLast = 'to_DESC_NULLS_LAST',
+  TokenAddressAsc = 'tokenAddress_ASC',
+  TokenAddressAscNullsFirst = 'tokenAddress_ASC_NULLS_FIRST',
+  TokenAddressAscNullsLast = 'tokenAddress_ASC_NULLS_LAST',
+  TokenAddressDesc = 'tokenAddress_DESC',
+  TokenAddressDescNullsFirst = 'tokenAddress_DESC_NULLS_FIRST',
+  TokenAddressDescNullsLast = 'tokenAddress_DESC_NULLS_LAST',
+  TypeAsc = 'type_ASC',
+  TypeAscNullsFirst = 'type_ASC_NULLS_FIRST',
+  TypeAscNullsLast = 'type_ASC_NULLS_LAST',
+  TypeDesc = 'type_DESC',
+  TypeDescNullsFirst = 'type_DESC_NULLS_FIRST',
+  TypeDescNullsLast = 'type_DESC_NULLS_LAST'
+}
+
+export enum OperationType {
+  Deposit = 'DEPOSIT',
+  Withdrawal = 'WITHDRAWAL'
+}
+
+export type OperationWhereInput = {
+  AND?: InputMaybe<Array<OperationWhereInput>>;
+  OR?: InputMaybe<Array<OperationWhereInput>>;
+  amount_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  group?: InputMaybe<GroupWhereInput>;
+  group_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  member_contains?: InputMaybe<Scalars['String']['input']>;
+  member_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  member_endsWith?: InputMaybe<Scalars['String']['input']>;
+  member_eq?: InputMaybe<Scalars['String']['input']>;
+  member_gt?: InputMaybe<Scalars['String']['input']>;
+  member_gte?: InputMaybe<Scalars['String']['input']>;
+  member_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  member_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  member_lt?: InputMaybe<Scalars['String']['input']>;
+  member_lte?: InputMaybe<Scalars['String']['input']>;
+  member_not_contains?: InputMaybe<Scalars['String']['input']>;
+  member_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  member_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  member_not_eq?: InputMaybe<Scalars['String']['input']>;
+  member_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  member_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  member_startsWith?: InputMaybe<Scalars['String']['input']>;
+  to_contains?: InputMaybe<Scalars['String']['input']>;
+  to_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  to_endsWith?: InputMaybe<Scalars['String']['input']>;
+  to_eq?: InputMaybe<Scalars['String']['input']>;
+  to_gt?: InputMaybe<Scalars['String']['input']>;
+  to_gte?: InputMaybe<Scalars['String']['input']>;
+  to_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  to_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  to_lt?: InputMaybe<Scalars['String']['input']>;
+  to_lte?: InputMaybe<Scalars['String']['input']>;
+  to_not_contains?: InputMaybe<Scalars['String']['input']>;
+  to_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  to_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  to_not_eq?: InputMaybe<Scalars['String']['input']>;
+  to_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  to_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  to_startsWith?: InputMaybe<Scalars['String']['input']>;
+  tokenAddress_contains?: InputMaybe<Scalars['String']['input']>;
+  tokenAddress_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  tokenAddress_endsWith?: InputMaybe<Scalars['String']['input']>;
+  tokenAddress_eq?: InputMaybe<Scalars['String']['input']>;
+  tokenAddress_gt?: InputMaybe<Scalars['String']['input']>;
+  tokenAddress_gte?: InputMaybe<Scalars['String']['input']>;
+  tokenAddress_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  tokenAddress_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  tokenAddress_lt?: InputMaybe<Scalars['String']['input']>;
+  tokenAddress_lte?: InputMaybe<Scalars['String']['input']>;
+  tokenAddress_not_contains?: InputMaybe<Scalars['String']['input']>;
+  tokenAddress_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  tokenAddress_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  tokenAddress_not_eq?: InputMaybe<Scalars['String']['input']>;
+  tokenAddress_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  tokenAddress_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  tokenAddress_startsWith?: InputMaybe<Scalars['String']['input']>;
+  type_eq?: InputMaybe<OperationType>;
+  type_in?: InputMaybe<Array<OperationType>>;
+  type_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  type_not_eq?: InputMaybe<OperationType>;
+  type_not_in?: InputMaybe<Array<OperationType>>;
+};
+
+export type OperationsConnection = {
+  __typename?: 'OperationsConnection';
+  edges: Array<OperationEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
 export type PageInfo = {
   __typename?: 'PageInfo';
   endCursor: Scalars['String']['output'];
@@ -390,6 +559,11 @@ export type Query = {
   membershipByUniqueInput?: Maybe<Membership>;
   memberships: Array<Membership>;
   membershipsConnection: MembershipsConnection;
+  operationById?: Maybe<Operation>;
+  /** @deprecated Use operationById */
+  operationByUniqueInput?: Maybe<Operation>;
+  operations: Array<Operation>;
+  operationsConnection: OperationsConnection;
   squidStatus?: Maybe<SquidStatus>;
 };
 
@@ -471,6 +645,32 @@ export type QueryMembershipsConnectionArgs = {
   where?: InputMaybe<MembershipWhereInput>;
 };
 
+
+export type QueryOperationByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryOperationByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryOperationsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<OperationOrderByInput>>;
+  where?: InputMaybe<OperationWhereInput>;
+};
+
+
+export type QueryOperationsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<OperationOrderByInput>;
+  where?: InputMaybe<OperationWhereInput>;
+};
+
 export enum Role {
   Admin = 'ADMIN',
   Manager = 'MANAGER',
@@ -491,6 +691,8 @@ export type Subscription = {
   invites: Array<Invite>;
   membershipById?: Maybe<Membership>;
   memberships: Array<Membership>;
+  operationById?: Maybe<Operation>;
+  operations: Array<Operation>;
 };
 
 
@@ -532,6 +734,19 @@ export type SubscriptionMembershipsArgs = {
   where?: InputMaybe<MembershipWhereInput>;
 };
 
+
+export type SubscriptionOperationByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type SubscriptionOperationsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<OperationOrderByInput>>;
+  where?: InputMaybe<OperationWhereInput>;
+};
+
 export type TokenAmount = {
   __typename?: 'TokenAmount';
   amount: Scalars['BigInt']['output'];
@@ -555,6 +770,13 @@ export type GetGroupBalanceSubscriptionVariables = Exact<{
 
 
 export type GetGroupBalanceSubscription = { __typename?: 'Subscription', groupById?: { __typename?: 'Group', tokenAmounts: Array<{ __typename?: 'TokenAmount', tokenAddress: string, amount: any }> } | null };
+
+export type GetGroupOperationsSubscriptionVariables = Exact<{
+  groupId: Scalars['String']['input'];
+}>;
+
+
+export type GetGroupOperationsSubscription = { __typename?: 'Subscription', operations: Array<{ __typename?: 'Operation', amount: any, id: string, member: string, to?: string | null, tokenAddress: string, type: OperationType }> };
 
 export type GetMyInvitesSubscriptionVariables = Exact<{
   account: Scalars['String']['input'];
@@ -616,6 +838,18 @@ export const GetGroupBalanceDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetGroupBalanceSubscription, GetGroupBalanceSubscriptionVariables>;
+export const GetGroupOperationsDocument = new TypedDocumentString(`
+    subscription GetGroupOperations($groupId: String!) {
+  operations(where: {group: {id_eq: $groupId}}) {
+    amount
+    id
+    member
+    to
+    tokenAddress
+    type
+  }
+}
+    `) as unknown as TypedDocumentString<GetGroupOperationsSubscription, GetGroupOperationsSubscriptionVariables>;
 export const GetMyInvitesDocument = new TypedDocumentString(`
     subscription GetMyInvites($account: String!) {
   invites(where: {invitee_eq: $account}) {

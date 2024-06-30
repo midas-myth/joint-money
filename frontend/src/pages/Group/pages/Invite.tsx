@@ -4,6 +4,7 @@ import { Address, isAddress } from "viem";
 import { useAccount } from "wagmi";
 
 import Button from "../../../components/Button";
+import Crumbs from "../../../components/Crumbs";
 import Heading from "../../../components/Heading";
 import Input from "../../../components/Input";
 import Page from "../../../components/Page";
@@ -56,7 +57,17 @@ export default function Invite() {
   return (
     <Page>
       <div className="flex flex-col gap-2">
-        <Heading>Invite to group {groupId}</Heading>
+        <div>
+          <Crumbs
+            crumbs={[
+              {
+                label: `Group ${groupId}`,
+                to: `/groups/${groupId}`,
+              },
+            ]}
+          />
+          <Heading>Invite to group {groupId}</Heading>
+        </div>
 
         <form className="flex flex-col gap-1" onSubmit={handleSubmit}>
           <div className="flex gap-1">

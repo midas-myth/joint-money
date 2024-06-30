@@ -45,7 +45,7 @@ contract JointMoneyErc20 {
         address tokenAddress,
         uint amount
     );
-    event GroupWithdrawn(uint id, address member, address token, uint amount);
+    event GroupWithdrawn(uint id, address member, address tokenAddress, uint amount);
     event GroupInvited(uint id, Invite[] invites);
     event GroupAccepted(uint id, address member);
     event GroupAllowanceSet(uint id, address member, uint amount);

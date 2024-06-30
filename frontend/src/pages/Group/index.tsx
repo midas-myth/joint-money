@@ -125,6 +125,10 @@ export default function Group() {
         )}
         {isAdmin && <AllowanceRow groupId={group.id} />}
 
+        <InternalLink bordered to={`/groups/${groupId}/operations`}>
+          Operations
+        </InternalLink>
+
         {/* {isAdmin && <DeleteRow groupId={group.id} />} */}
         {!isMember && !isAdmin && <div>Read only</div>}
       </div>

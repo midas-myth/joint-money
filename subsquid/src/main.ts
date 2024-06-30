@@ -1,11 +1,13 @@
-import { EvmBatchProcessor, assertNotNull } from "@subsquid/evm-processor";
+import { assertNotNull, EvmBatchProcessor } from "@subsquid/evm-processor";
 import { TypeormDatabase } from "@subsquid/typeorm-store";
-import { ethers } from "ethers";
 
 import * as JointMoneyErc20Abi from "./abi/JointMoneyErc20";
-
-import { Group, Invite, Membership, Role, TokenAmount } from "./model";
-import intToRole from "./domain/intToRole";
+import { Group } from "./model";
+import processGroupAccepted from "./processGroupAccepted";
+import processGroupCreated from "./processGroupCreated";
+import processGroupDeposited from "./processGroupDeposited";
+import processGroupInvited from "./processGroupInvited";
+import processGroupWithdrawn from "./processGroupWithdrawn";
 
 const netName = process.env.NET_NAME || "hardhat";
 
@@ -55,140 +57,18 @@ const db = new TypeormDatabase();
 processor.run(db, async (ctx) => {
   const groupsCache = new Map<string, Group>();
 
-  async function fetchGroup(id: string) {
-    let group = groupsCache.get(id);
-
-    if (!group) {
-      group = await ctx.store.findOneByOrFail(Group, { id });
-    }
-
-    return group;
-  }
-
   for (const block of ctx.blocks) {
     for (const log of block.logs) {
       if (JointMoneyErc20Abi.events.GroupCreated.is(log)) {
-        const { id, admin } =
-          JointMoneyErc20Abi.events.GroupCreated.decode(log);
-
-        const group = new Group({
-          id: id.toString(),
-          admin,
-          members: [],
-          invites: [],
-          tokenAmounts: [],
-        });
-
-        const newMember = new Membership({
-          id: id + "-" + admin,
-          group,
-          address: admin,
-          role: Role.ADMIN,
-          dailyAllowance: ethers.MaxUint256,
-          dailySpent: 0n,
-          lastSpentAt: 0n,
-        });
-
-        group.members.push(newMember);
-
-        await ctx.store.save(group);
-        await ctx.store.save(newMember);
-        ctx.log.info(`Group created: ${group.id}`);
+        await processGroupCreated(ctx, log);
       } else if (JointMoneyErc20Abi.events.GroupAccepted.is(log)) {
-        const { id, member } =
-          JointMoneyErc20Abi.events.GroupAccepted.decode(log);
-
-        const group = await fetchGroup(id.toString());
-        const invite = group.invites.find((i) => i.invitee === member);
-
-        if (invite === undefined) {
-          console.error(
-            `Invite not found for group: ${group.id}, member: ${member}`
-          );
-          continue;
-        }
-
-        const newMember = new Membership({
-          id: id + "-" + member,
-          address: member,
-          role: invite.role,
-          dailyAllowance: 0n,
-          group,
-          dailySpent: 0n,
-          lastSpentAt: 0n,
-        });
-
-        group.members ||= [];
-        group.members.push(newMember);
-
-        group.invites ||= [];
-        group.invites = group.invites.filter((i) => i.invitee !== member);
-
-        await ctx.store.save(group);
-        await ctx.store.save(newMember);
-
-        ctx.log.info(`Member added to group: ${group.id}`);
+        await processGroupAccepted(ctx, log);
       } else if (JointMoneyErc20Abi.events.GroupDeposited.is(log)) {
-        const { id, member, tokenAddress, amount } =
-          JointMoneyErc20Abi.events.GroupDeposited.decode(log);
-
-        const group = await fetchGroup(id.toString());
-
-        const existingAmount = group.tokenAmounts.find(
-          (ta) => ta.tokenAddress === tokenAddress
-        );
-
-        if (existingAmount !== undefined) {
-          existingAmount.amount += amount;
-        } else {
-          group.tokenAmounts.push(new TokenAmount({ tokenAddress, amount }));
-        }
-
-        await ctx.store.save(group);
-        ctx.log.info(`Deposited to group: ${group.id}`);
+        await processGroupDeposited(ctx, log);
       } else if (JointMoneyErc20Abi.events.GroupInvited.is(log)) {
-        const { id, invites } =
-          JointMoneyErc20Abi.events.GroupInvited.decode(log);
-
-        const group = await fetchGroup(id.toString());
-
-        const inviteInstances = invites.map(
-          (invite) =>
-            new Invite({
-              id: id + "-" + invite.invitee,
-              group,
-              invitee: invite.invitee,
-              role: intToRole(invite.role),
-            })
-        );
-
-        group.invites ||= [];
-        group.invites.push(...inviteInstances);
-
-        await ctx.store.save(group);
-        await ctx.store.save(inviteInstances);
-
-        ctx.log.info(`Invites created for group: ${group.id}`);
+        await processGroupInvited(ctx, log);
       } else if (JointMoneyErc20Abi.events.GroupWithdrawn.is(log)) {
-        const { id, member, token, amount } =
-          JointMoneyErc20Abi.events.GroupWithdrawn.decode(log);
-
-        const group = await fetchGroup(id.toString());
-
-        const existingAmount = group.tokenAmounts.find(
-          (ta) => ta.tokenAddress === token
-        );
-
-        if (existingAmount !== undefined) {
-          existingAmount.amount -= amount;
-        } else {
-          group.tokenAmounts.push(
-            new TokenAmount({ tokenAddress: token, amount: -amount })
-          );
-        }
-
-        await ctx.store.save(group);
-        ctx.log.info(`Withdrawn from group: ${group.id}`);
+        await processGroupWithdrawn(ctx, log);
       }
     }
   }

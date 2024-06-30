@@ -10,7 +10,7 @@ export const events = {
     GroupInvitationCancelled: event("0x0dcf568e005fb4d7934728af3d9aada69a7759415c1ed033a61c207dc2edaadd", {"id": p.uint256, "invitee": p.address}),
     GroupInvited: event("0x5eae638e4d137b3e6983ad2f0c6ca883e98f8fbce19291ded9d49f751b971c40", {"id": p.uint256, "invites": p.array(p.struct({"invitee": p.address, "role": p.uint8}))}),
     GroupLeft: event("0x136090f261f016cc705317a2744c016a5d5c0ac8dfe90a2b529614feb68c4e9d", {"id": p.uint256, "member": p.address}),
-    GroupWithdrawn: event("0x95c8fde303c0b32a8df290eedf185ddc29f5b760747529f24753957cc42ce590", {"id": p.uint256, "member": p.address, "token": p.address, "amount": p.uint256}),
+    GroupWithdrawn: event("0x95c8fde303c0b32a8df290eedf185ddc29f5b760747529f24753957cc42ce590", {"id": p.uint256, "member": p.address, "tokenAddress": p.address, "amount": p.uint256}),
 }
 
 export const functions = {
